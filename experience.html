@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experience — Ankit Addya</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html"         class="nav-link nav-home">Ankit Addya</a>
+    <a href="about.html"         class="nav-link">About</a>
+    <a href="production-ml.html" class="nav-link" data-track="1"><span class="nav-dot"></span>Production ML</a>
+    <a href="data-science.html"  class="nav-link" data-track="2"><span class="nav-dot"></span>Data Science</a>
+    <a href="ai-engineering.html"class="nav-link" data-track="3"><span class="nav-dot"></span>AI Engineering</a>
+    <a href="experience.html"    class="nav-link">Experience</a>
+    <a href="contact.html"       class="nav-link">Contact</a>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-menu-close" id="mobile-close">✕</button>
+  <a href="about.html">About</a>
+  <a href="production-ml.html">Production ML Engineering</a>
+  <a href="data-science.html">Data Science</a>
+  <a href="ai-engineering.html">AI Engineering</a>
+  <a href="experience.html">Experience</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<main>
+  <div class="page-header">
+    <div class="container">
+      <div class="label">Professional History</div>
+      <h1>Experience</h1>
+      <p>Two employers. One deliberate pivot from commercial analytics to production ML and AI engineering.</p>
+    </div>
+  </div>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="exp-timeline">
+
+        <!-- ═══ EMPLOYER 1: INDEPENDENT ══════════════════════ -->
+        <div class="exp-employer reveal">
+          <div class="exp-employer-header">
+            <div class="exp-employer-logo">🛠️</div>
+            <div>
+              <h3>Independent Data Science &amp; ML Practitioner</h3>
+              <div class="meta">Nov 2022 – Present &nbsp;·&nbsp; Kolkata, India &nbsp;·&nbsp; Self-Directed</div>
+            </div>
+          </div>
+
+          <div class="exp-role">
+            <div class="exp-role-header">
+              <h4>Data Scientist / ML Engineer</h4>
+              <span class="exp-role-period">Nov 2022 – Present</span>
+            </div>
+            <ul>
+              <li>
+                Completed a 28-month assessed Data Science and Machine Learning program at
+                <strong style="color:var(--text);">Scaler Academy</strong> — written examinations and technical
+                interviews at every module stage, not just certificates for watching videos.
+                Mentored by practitioners from Microsoft, Walmart, Morgan Stanley, and Ola Electric.
+              </li>
+              <li>
+                Built five production ML and AI platforms from scratch:
+                <strong style="color:var(--text);">Customer Lifetime Value Predictor</strong> (Snowflake, dbt, Airflow, MLflow, FastAPI),
+                <strong style="color:var(--text);">Expense Analytics Agent</strong> (LangGraph on GKE, Vertex AI),
+                <strong style="color:var(--text);">24/7 SRE Agent System</strong> (LangGraph, Hybrid RAG, Vowpal Wabbit RL),
+                <strong style="color:var(--text);">Player Churn Platform</strong> (PySpark, XGBoost, FastAPI),
+                <strong style="color:var(--text);">FMCG Retail Lakehouse</strong> (Databricks, Medallion Architecture, PySpark).
+              </li>
+              <li>
+                Deployed production LangGraph multi-agent systems on GCP with Terraform IaC and ArgoCD GitOps.
+                Built Hybrid RAG pipelines (BM25 + vector + Reciprocal Rank Fusion + Cohere reranking).
+                Implemented online reinforcement learning with Vowpal Wabbit contextual bandits.
+              </li>
+              <li>
+                Deep learning image segmentation — automated cardiac segmentation achieving mIoU 0.8509,
+                Dice Coefficient 0.9147 on 2,000 NIfTI image-mask pairs across 500 patients.
+              </li>
+              <li>
+                Participated in HuggingFace MCP Hackathon — built an AI Wellness application using
+                Model Context Protocol. Awarded <strong style="color:var(--text);">Hugging Face Agents Course Certificate of Excellence</strong>.
+              </li>
+            </ul>
+
+            <div class="tech-stack" style="margin-top: 20px;">
+              <span class="badge">Python</span>
+              <span class="badge">PySpark</span>
+              <span class="badge">LangGraph</span>
+              <span class="badge">LangChain</span>
+              <span class="badge">Vowpal Wabbit</span>
+              <span class="badge">Snowflake</span>
+              <span class="badge">dbt</span>
+              <span class="badge">Airflow</span>
+              <span class="badge">Databricks</span>
+              <span class="badge">MLflow</span>
+              <span class="badge">FastAPI</span>
+              <span class="badge">PyTorch</span>
+              <span class="badge">XGBoost</span>
+              <span class="badge">LightGBM</span>
+              <span class="badge">GKE</span>
+              <span class="badge">Terraform</span>
+              <span class="badge">ArgoCD</span>
+              <span class="badge">GitHub Actions</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ EMPLOYER 2: DECIMAL POINT ════════════════════ -->
+        <div class="exp-employer reveal" style="margin-top: 16px;">
+          <div class="exp-employer-header">
+            <div class="exp-employer-logo">📈</div>
+            <div>
+              <h3>Decimal Point Analytics</h3>
+              <div class="meta">Oct 2020 – Nov 2022 &nbsp;·&nbsp; Nashik, India &nbsp;·&nbsp; FinTech SaaS — B2B</div>
+            </div>
+          </div>
+
+          <!-- Role 1 -->
+          <div class="exp-role">
+            <div class="exp-role-header">
+              <h4>Research Analyst</h4>
+              <span class="exp-role-period">Jun 2022 – Nov 2022</span>
+            </div>
+            <ul>
+              <li>
+                Led a 4-analyst workstream building <strong style="color:var(--text);">FidelityPulse</strong>,
+                a production ML fraud detection platform on Databricks PySpark for a financial services B2B client.
+                Improved model accuracy from 85% to 92% through feature engineering — not algorithm switching.
+              </li>
+              <li>
+                PySpark feature engineering: 21 behavioural and transactional signals using the Window API
+                for rolling aggregations. ETL pipelines with schema validation, reconciliation checks,
+                and governed access controls.
+              </li>
+              <li>
+                Built <strong style="color:var(--text);">CreditPulse</strong>, an NLP credit risk classifier
+                achieving 90%+ accuracy on 10 years of unstructured financial market data.
+                Feature extraction: TF-IDF vectorisation + BERT embeddings.
+              </li>
+              <li>
+                Standardised data labelling processes — annotation logic documented as SOPs with
+                subject matter experts. Automated training-data collection via Power Automate.
+              </li>
+            </ul>
+            <div class="tech-stack" style="margin-top: 16px;">
+              <span class="badge">Databricks</span>
+              <span class="badge">PySpark</span>
+              <span class="badge">Python</span>
+              <span class="badge">BERT</span>
+              <span class="badge">TF-IDF</span>
+              <span class="badge">Power Automate</span>
+              <span class="badge">SQL</span>
+            </div>
+          </div>
+
+          <!-- Role 2 -->
+          <div class="exp-role" style="margin-top: 28px; padding-top: 28px; border-top: 1px solid var(--border);">
+            <div class="exp-role-header">
+              <h4>Junior Data Analyst</h4>
+              <span class="exp-role-period">Apr 2021 – Jun 2022</span>
+            </div>
+            <ul>
+              <li>Built SQL pipelines and Power BI dashboards for FinTech client performance monitoring.</li>
+              <li>Root cause analysis on reporting pipeline reduced reporting errors by 30%.</li>
+              <li>Python automation scripts reduced manual turnaround by 60%.</li>
+            </ul>
+            <div class="tech-stack" style="margin-top: 16px;">
+              <span class="badge">SQL</span>
+              <span class="badge">Power BI</span>
+              <span class="badge">Python</span>
+            </div>
+          </div>
+
+          <!-- Role 3 -->
+          <div class="exp-role" style="margin-top: 28px; padding-top: 28px; border-top: 1px solid var(--border);">
+            <div class="exp-role-header">
+              <h4>Finance Analyst Intern</h4>
+              <span class="exp-role-period">Oct 2020 – Apr 2021</span>
+            </div>
+            <ul>
+              <li>Extracted and structured financial data from multiple source systems.</li>
+              <li>Built Python and Excel models for trend and variance analysis with reconciliation checks.</li>
+            </ul>
+            <div class="tech-stack" style="margin-top: 16px;">
+              <span class="badge">Python</span>
+              <span class="badge">Excel VBA</span>
+              <span class="badge">SQL</span>
+            </div>
+          </div>
+
+        </div><!-- /employer 2 -->
+
+        <!-- ═══ EDUCATION ══════════════════════════════════════ -->
+        <div class="exp-employer reveal" style="margin-top: 16px;">
+          <div class="exp-employer-header" style="margin-bottom: 16px;">
+            <div class="exp-employer-logo">🎓</div>
+            <div>
+              <h3>Education</h3>
+            </div>
+          </div>
+
+          <div class="exp-role">
+            <div class="exp-role-header">
+              <h4>Heramba Chandra College, Kolkata — B.Com (Commerce &amp; Accounting)</h4>
+              <span class="exp-role-period">2017 – 2020</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /exp-timeline -->
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-name">Ankit Addya</span>
+      <div class="footer-links">
+        <a href="mailto:ankit.addya@yahoo.com">ankit.addya@yahoo.com</a>
+        <a href="https://linkedin.com/in/ankit-addya-6a6b14159" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/addy9051" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <span class="footer-copy">Kolkata, India</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

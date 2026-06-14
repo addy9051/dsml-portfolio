@@ -1,0 +1,12 @@
+# Local tooling (absolute paths, not portable)
+.claude/
+
+# Netlify local state
+.netlify/
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db

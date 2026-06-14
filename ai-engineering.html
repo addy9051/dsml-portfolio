@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Engineering — Ankit Addya</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html"         class="nav-link nav-home">Ankit Addya</a>
+    <a href="about.html"         class="nav-link">About</a>
+    <a href="production-ml.html" class="nav-link" data-track="1"><span class="nav-dot"></span>Production ML</a>
+    <a href="data-science.html"  class="nav-link" data-track="2"><span class="nav-dot"></span>Data Science</a>
+    <a href="ai-engineering.html"class="nav-link" data-track="3"><span class="nav-dot"></span>AI Engineering</a>
+    <a href="experience.html"    class="nav-link">Experience</a>
+    <a href="contact.html"       class="nav-link">Contact</a>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-menu-close" id="mobile-close">✕</button>
+  <a href="about.html">About</a>
+  <a href="production-ml.html">Production ML Engineering</a>
+  <a href="data-science.html">Data Science</a>
+  <a href="ai-engineering.html">AI Engineering</a>
+  <a href="experience.html">Experience</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<main>
+  <div class="page-header">
+    <div class="container">
+      <span class="track-badge" data-track="3">🤖 &nbsp;Track 3</span>
+      <h1>AI Engineering</h1>
+      <blockquote class="page-tagline">
+        "Production AI systems. LangGraph multi-agent pipelines, Hybrid RAG with measured recall,
+        online RL with A/B validation — deployed on GKE with full observability."
+      </blockquote>
+      <p>The 24/7 SRE Agent System is the centrepiece of this track. Everything else provides supporting context.</p>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ═══════════════════════════════════════════════════════
+         PROJECT 1: SRE AGENT SYSTEM (CROWN JEWEL)
+         ═══════════════════════════════════════════════════════ -->
+    <div class="project-section t3 reveal">
+      <div class="project-label">
+        <span class="project-num">1</span>
+        <span class="label" style="color: var(--t3-color);">Crown Jewel — Full Page Treatment</span>
+      </div>
+      <span class="private-note">🔒 Private repository — architecture and code excerpts shown below</span>
+      <h2 style="margin-top: 16px;">24/7 Service Reliability &amp; Anomaly-Response Agent System</h2>
+      <p class="lead">
+        Autonomous SRE system for FinTech payment transaction monitoring. A 7-phase production build
+        with documented architecture audits, systematic gap remediation, and a reinforcement learning
+        feedback loop. Most AI projects show only the finished state. This one shows the gap analysis
+        and the remediation that closed it.
+      </p>
+
+      <!-- SECTION A: SYSTEM AT A GLANCE -->
+      <div class="sub-section" style="margin-top: 40px;">
+        <h3 style="color: var(--t3-color);">A — System at a Glance</h3>
+      </div>
+
+      <div class="slo-grid">
+        <div class="slo-card">
+          <div class="slo-val">&lt;90s</div>
+          <div class="slo-metric">MTTA</div>
+          <div class="slo-desc">Mean Time to Acknowledge — autonomous triage replaces human pager response</div>
+        </div>
+        <div class="slo-card">
+          <div class="slo-val">&lt;8min</div>
+          <div class="slo-metric">MTTR</div>
+          <div class="slo-desc">Tier 1 auto-execution + Tier 2 Slack approval flow</div>
+        </div>
+        <div class="slo-card">
+          <div class="slo-val">&lt;5%</div>
+          <div class="slo-metric">False Positive Rate</div>
+          <div class="slo-desc">RL feedback loop continuously improves detection precision</div>
+        </div>
+        <div class="slo-card">
+          <div class="slo-val">≥95%</div>
+          <div class="slo-metric">Data Quality Score</div>
+          <div class="slo-desc">Recall on transaction schema violations</div>
+        </div>
+      </div>
+
+      <div class="sub-section"><h3>4-Agent Pipeline</h3></div>
+      <pre class="arch-diagram">
+<span class="hi3">Google Pub/Sub</span>  (telemetry stream)
+         │
+         ▼
+<span class="hi">Monitoring Agent</span>  (LangChain ReAct + Isolation Forest)
+  confidence_threshold = 0.75
+  5 custom SRE tools · RollingWindowAggregator · AlertDeduplicator
+         │
+         ▼  AnomalyEvent (Pydantic contract)
+<span class="hi3">Diagnosis Agent</span>  (LangGraph Supervisor-Expert pattern)
+  ┌──────────────────────────────────────────────────┐
+  │  gather_context → rag_runbook_lookup (Hybrid RAG) │
+  │         → Triage Supervisor (LLM dispatch)        │
+  │                                                   │
+  │  <span class="hi2">DatabaseExpert</span>   <span class="hi2">NetworkExpert</span>                      │
+  │  <span class="hi2">SecurityAuditor</span>  <span class="hi2">ApplicationExpert</span>               │
+  │         (parallel execution)                      │
+  │         → synthesise_rca                         │
+  └──────────────────────────────────────────────────┘
+         │
+         ▼  DiagnosisResult (Pydantic contract)
+<span class="hi">Action Agent</span>  (3-Tier Classification)
+  Tier 1 → Auto-execute   (scale replicas, restart pods, flush caches)
+  Tier 2 → Slack approval (database failover, traffic rerouting)
+  Tier 3 → PagerDuty      (schema rollback, full service drain)
+  + Redis distributed locks (SETNX) for idempotency
+         │
+         ▼  ActionResult (Pydantic contract)
+<span class="hi3">Feedback Agent</span>  (Vowpal Wabbit contextual bandits)
+  cb_explore_adf · epsilon-greedy exploration
+  Hybrid reward: SLO metrics + LLM-as-Judge (3 dimensions)
+  A/B Router: 50% Control / 50% Experimental
+         │
+         └──────────── policy update ──────────────▶ GCS Bucket → reload predictor pods</pre>
+
+      <div class="tech-stack">
+        <span class="badge">LangGraph 0.2+</span>
+        <span class="badge">LangChain</span>
+        <span class="badge">Vowpal Wabbit</span>
+        <span class="badge">GKE Autopilot</span>
+        <span class="badge">Next.js 16</span>
+        <span class="badge">pgvector</span>
+        <span class="badge">Langfuse (self-hosted)</span>
+        <span class="badge">Arize Phoenix</span>
+        <span class="badge">Redis</span>
+        <span class="badge">Google Pub/Sub</span>
+        <span class="badge">PagerDuty</span>
+        <span class="badge">ArgoCD</span>
+        <span class="badge">Terraform</span>
+        <span class="badge">Prometheus + Grafana</span>
+        <span class="badge">OpenTelemetry</span>
+      </div>
+
+      <!-- SECTION B: 7-PHASE EVOLUTION -->
+      <div class="sub-section" style="margin-top: 48px;">
+        <h3 style="color: var(--t3-color);">B — 7-Phase Engineering Evolution</h3>
+        <p>Most AI portfolio projects are "I built a chatbot." This project has a documented 7-phase evolution with architecture audits and systematic gap remediation.</p>
+      </div>
+
+      <div class="phase-timeline">
+        <div class="phase-item">
+          <h4>Phase 1 — Original Architecture Design</h4>
+          <p>8-phase design document: domain analysis, stakeholder mapping, technology evaluation matrix, risk register. Architecture defined before a line of code was written.</p>
+        </div>
+        <div class="phase-item">
+          <h4>Phase 2 — v1 Implementation with Strategic Pivots</h4>
+          <p>Core agent pipeline built. Strategic pivots made: self-hosted Langfuse instead of Datadog, pgvector instead of Vertex AI Matching Engine, GKE Autopilot instead of fragmented GKE + Cloud Run. Each pivot documented with rationale.</p>
+        </div>
+        <div class="phase-item">
+          <h4>Phase 3 — v2 Architecture: LLM Observability Layer</h4>
+          <p>Langfuse (primary LLM traces), Arize Phoenix (RAG quality + embedding drift), Datadog (SRE-view OTLP export) added as three-tier observability stack.</p>
+        </div>
+        <div class="phase-item">
+          <h4>Phase 4 — Architecture Audit (claude_walkthrough.md)</h4>
+          <p>Comprehensive code-vs-design validation. Maturity scorecard generated for 7 system areas. Weaknesses identified and ranked by impact. Gap list produced.</p>
+        </div>
+        <div class="phase-item">
+          <h4>Phase 5 — Gap Remediation (Priority 1 / 2 / 3)</h4>
+          <p>Systematic closure of audit findings. Hybrid RAG rebuilt, PII sanitisation added, GitHub Actions hardened, RL A/B testing implemented, ArgoCD canary releases added.</p>
+        </div>
+        <div class="phase-item">
+          <h4>Phase 6 — Real-Time SRE Dashboard (Next.js)</h4>
+          <p>Cyberpunk-themed mission control dashboard with live telemetry pulse, incident railroad mapping, RL policy A/B comparison, and real-time backend health monitoring.</p>
+        </div>
+        <div class="phase-item">
+          <h4>Phase 7 — CI/CD Stabilisation</h4>
+          <p>GitHub Actions pipeline hardened to 4-stage flow: Lint → Test → Build → Deploy. Previous score: 2/5. After remediation: 4/5.</p>
+        </div>
+      </div>
+
+      <!-- SECTION C: ARCHITECTURE AUDIT + GAP REMEDIATION -->
+      <div class="sub-section" style="margin-top: 48px;">
+        <h3 style="color: var(--t3-color);">C — Architecture Audit &amp; Gap Remediation</h3>
+        <p>This is the differentiating section. The maturity scorecard from Phase 4 — before and after remediation.</p>
+      </div>
+
+      <div class="card" style="margin-bottom: 28px; padding: 0; overflow: hidden;">
+        <div style="padding: 20px 24px; border-bottom: 1px solid var(--border);">
+          <p style="font-size: 13px; color: var(--text-muted); font-style: italic;">
+            "Most portfolio projects show only the finished state. This one shows the gap analysis
+            that identified weaknesses and the systematic remediation that closed them."
+          </p>
+        </div>
+        <div style="padding: 8px 24px 20px;">
+          <div class="scorecard-row">
+            <span class="area">Area</span>
+            <span style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.08em;">Before</span>
+            <span style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.08em;">After</span>
+          </div>
+          <div class="scorecard-row">
+            <span class="area">Agent Pipeline (Mon→Diag→Act→Feedback)</span>
+            <div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill" style="width:80%"></div></div><span class="score-text">4/5</span></div>
+            <div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill improved" style="width:100%"></div></div><span class="score-text score-improved">5/5</span></div>
+          </div>
+          <div class="scorecard-row">
+            <span class="area">LangGraph + Supervisor-Expert Pattern</span>
+            <div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill" style="width:80%"></div></div><span class="score-text">4/5</span></div>
+            <div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill improved" style="width:100%"></div></div><span class="score-text score-improved">5/5</span></div>
+          </div>
+          <div class="scorecard-row">
+            <span class="area">Reinforcement Learning (VW Bandit)</span>
+            <div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill" style="width:80%"></div></div><span class="score-text">4/5</span></div>
+            <div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill improved" style="width:100%"></div></div><span class="score-text score-improved">5/5</span></div>
+          </div>
+          <div class="scorecard-row">
+            <span class="area">LLM Observability (Langfuse)</span>
+            <div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill" style="width:60%"></div></div><span class="score-text">3/5</span></div>
+            <div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill improved" style="width:80%"></div></div><span class="score-text score-improved">4/5</span></div>
+          </div>
+          <div class="scorecard-row">
+            <span class="area">RAG Pipeline (Knowledge Base)</span>
+            <div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill score-low" style="width:40%"></div></div><span class="score-text score-low">2/5</span></div>
+            <div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill improved" style="width:80%"></div></div><span class="score-text score-improved">4/5</span></div>
+          </div>
+          <div class="scorecard-row">
+            <span class="area">Infrastructure (GKE / Terraform)</span>
+            <div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill" style="width:80%"></div></div><span class="score-text">4/5</span></div>
+            <div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill improved" style="width:100%"></div></div><span class="score-text score-improved">5/5</span></div>
+          </div>
+          <div class="scorecard-row">
+            <span class="area">CI/CD (GitHub Actions)</span>
+            <div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill score-low" style="width:40%"></div></div><span class="score-text score-low">2/5</span></div>
+            <div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill improved" style="width:80%"></div></div><span class="score-text score-improved">4/5</span></div>
+          </div>
+          <p style="font-size: 12px; color: var(--text-muted); padding: 14px 0 4px; line-height: 1.6;">
+            <strong style="color: var(--text);">Honest status:</strong> "Before" scores are taken verbatim from the
+            Phase&nbsp;4 audit (<code style="font-size:11px;">claude_walkthrough.md</code>). The remediation code for every
+            row exists in the repo. A few components remain scaffolded rather than fully live — per the repo's own
+            <em>Known Limitations</em>: Langfuse is wired but not yet emitting traces end-to-end, LangGraph checkpointing
+            runs on an in-memory saver locally, and some dashboard pages are still placeholders.
+          </p>
+        </div>
+      </div>
+
+      <!-- Gap fixes -->
+      <div class="three-col">
+        <div class="card t3">
+          <h4 style="margin-bottom: 10px;">Priority 1 — High Impact</h4>
+          <ul class="key-points">
+            <li>Hybrid RAG: full vector + BM25 + Reciprocal Rank Fusion + Cohere cross-encoder reranking (<code style="font-size:11px;">rerank-english-v3.0</code>)</li>
+            <li>Document chunking: 512 tokens, 64 overlap</li>
+            <li>LangGraph state checkpointing (Redis → MemorySaver local dev)</li>
+            <li>Langfuse CallbackHandler with session scoping by <code style="font-size:11px;">incident_id</code></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom: 10px;">Priority 2 — Medium Impact</h4>
+          <ul class="key-points">
+            <li>PII sanitisation: <code style="font-size:11px;">sanitize_for_llm()</code> in <code style="font-size:11px;">shared/pii.py</code></li>
+            <li>GitHub Actions 4-stage CI/CD: Lint → Test → Build → Deploy</li>
+            <li><code style="font-size:11px;">LLMCostTracker</code>: <code style="font-size:11px;">max_tokens_per_incident = 50,000</code> ceiling</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4 style="margin-bottom: 10px;">Priority 3 — Lower Impact</h4>
+          <ul class="key-points">
+            <li>Redis distributed locks via SETNX for idempotency</li>
+            <li>RL A/B Testing: 50% Control / 50% Experimental via deterministic <code style="font-size:11px;">incident_id</code> hashing</li>
+            <li><code style="font-size:11px;">BudgetExceededError</code> circuit breaker → human SRE escalation</li>
+            <li>ArgoCD GitOps: canary releases (20% → 50% → 100% traffic shifting)</li>
+            <li>Dynamic HPA Autoscaling via Prometheus ServiceMonitors</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SECTION D: KEY TECHNICAL DECISIONS -->
+      <div class="sub-section" style="margin-top: 48px;">
+        <h3 style="color: var(--t3-color);">D — Key Technical Decisions</h3>
+      </div>
+
+      <div class="two-col">
+        <div class="decision-card">
+          <div class="decision-label">Decision 1</div>
+          <h4>Self-hosted Langfuse vs Datadog LLM Observability</h4>
+          <div class="decision-row" style="margin-top: 12px;">
+            <div class="rejected">✗ &nbsp;Datadog LLM Obs (SaaS) — rejected</div>
+            <div class="chosen">✓ &nbsp;Self-hosted Langfuse — chosen</div>
+            <div class="reason">Financial transaction data cannot leave the GCP project boundary. Self-hosted Langfuse means zero PII escapes the network perimeter.</div>
+          </div>
+        </div>
+        <div class="decision-card">
+          <div class="decision-label">Decision 2</div>
+          <h4>pgvector vs Vertex AI Matching Engine</h4>
+          <div class="decision-row" style="margin-top: 12px;">
+            <div class="rejected">✗ &nbsp;Vertex AI Matching Engine — rejected</div>
+            <div class="chosen">✓ &nbsp;pgvector running co-located with agents — chosen</div>
+            <div class="reason">Cost and latency. Local vector store with no API round-trip for every RAG query. Matching Engine adds per-query cost and network RTT.</div>
+          </div>
+        </div>
+        <div class="decision-card">
+          <div class="decision-label">Decision 3</div>
+          <h4>GKE Autopilot vs fragmented GKE + Cloud Run</h4>
+          <div class="decision-row" style="margin-top: 12px;">
+            <div class="rejected">✗ &nbsp;Separate GKE node pool + Cloud Run services — rejected</div>
+            <div class="chosen">✓ &nbsp;Unified GKE Autopilot — chosen</div>
+            <div class="reason">Consolidated serverless footprint, simpler scaling, single Terraform scope. Fragmented infra adds operational overhead without benefit at this scale.</div>
+          </div>
+        </div>
+        <div class="decision-card">
+          <div class="decision-label">Decision 4</div>
+          <h4>MemorySaver vs Redis (local development)</h4>
+          <div class="decision-row" style="margin-top: 12px;">
+            <div class="rejected">✗ &nbsp;Redis for all environments — rejected</div>
+            <div class="chosen">✓ &nbsp;MemorySaver local dev, Redis production — chosen</div>
+            <div class="reason">Redis service container has compatibility issues during local development. MemorySaver provides identical LangGraph checkpointing semantics without the container dependency.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION E: RL ARCHITECTURE -->
+      <div class="sub-section" style="margin-top: 48px;">
+        <h3 style="color: var(--t3-color);">E — Reinforcement Learning Architecture</h3>
+        <p>Vowpal Wabbit contextual bandits with a distributed Trainer-Predictor split and A/B testing. Unusual in any portfolio — exceptional in an AI engineering context.</p>
+      </div>
+
+      <div class="rl-split">
+        <div>
+          <pre class="arch-diagram" style="margin-top: 0;">
+<span class="hi3">Trainer Pod</span>  (Singleton)
+Algorithm: cb_explore_adf
+Exploration: epsilon-greedy
+      │
+      ▼  Upload .vw binary model
+<span class="hi2">GCS Bucket</span>
+      │
+      ├──── Periodic Reload ──→ Predictor Pod 1
+      ├──── Periodic Reload ──→ Predictor Pod 2
+      └──── Periodic Reload ──→ Predictor Pod N
+
+<span class="hi">A/B Router</span>:
+Incoming Incident
+  → hash(incident_id) % 2 == 0 → 50% Control → Pod 1
+  → hash(incident_id) % 2 == 1 → 50% Experimental → Pod 2</pre>
+        </div>
+        <div class="card" style="align-self: start;">
+          <h4>Reward Design</h4>
+          <p style="font-size:13px; margin-top:8px; margin-bottom: 14px;">Hybrid reward combines objective SLO metrics with qualitative LLM-as-Judge evaluation.</p>
+          <ul class="key-points">
+            <li><strong class="text-strong">Objective component:</strong> SLO attainment — did MTTA &lt; 90s? did MTTR &lt; 8min?</li>
+            <li><strong class="text-strong">Qualitative component:</strong> LLM-as-Judge (gpt-4o-mini) scores the action on 3 dimensions — correctness, speed, and business impact</li>
+            <li><strong class="text-strong">Why hybrid?</strong> SLO metrics alone are sparse (only resolved at incident end). LLM judge provides dense intermediate signal.</li>
+            <li><strong class="text-strong">A/B comparison:</strong> cumulative reward graphed live in Next.js dashboard</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SECTION F: DASHBOARD -->
+      <div class="sub-section" style="margin-top: 48px;">
+        <h3 style="color: var(--t3-color);">F — Real-Time SRE Dashboard (Next.js 16)</h3>
+      </div>
+
+      <div class="three-col">
+        <div class="card t3">
+          <h4>System Pulse</h4>
+          <p style="font-size:13px; margin-top:6px;">Real-time scatter plot of telemetry events colour-coded by anomaly status. Continuous synthetic metric injection via background heartbeat.</p>
+        </div>
+        <div class="card">
+          <h4>Incident Railroad</h4>
+          <p style="font-size:13px; margin-top:6px;">Active response workflows shown as railroad-style incident lifecycle: Detected → Diagnosing → Mitigating → Resolved. Live counts of active and resolved incidents.</p>
+        </div>
+        <div class="card">
+          <h4>RL Policy A/B</h4>
+          <p style="font-size:13px; margin-top:6px;">Cumulative reward comparison between Control and Experimental RL policies. Current policy version displayed. Real-time backend health with automatic retry on disconnect.</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <span class="private-note">🔒 Repo is private — GitHub profile: github.com/addy9051</span>
+      </div>
+    </div>
+
+    <!-- ═══ PROJECT 2: EXPENSE ANALYTICS AGENT ══════════════ -->
+    <div class="project-section t3 reveal">
+      <div class="project-label">
+        <span class="project-num">2</span>
+        <span class="label">AI Agent — Text-to-SQL</span>
+      </div>
+      <h2>Expense Analytics &amp; Policy Compliance — AI Agent Layer</h2>
+      <p class="lead">
+        Presenting only the LangGraph AI agent component. The fraud detection analytics, Power BI dashboard,
+        and cost analysis are separate concerns covered in a different portfolio context. This page covers
+        the AI engineering layer: adversarial hardening and responsible AI deployment.
+      </p>
+
+      <div class="sub-section"><h3>Architecture — Text-to-SQL Agent</h3></div>
+      <pre class="arch-diagram">
+User Query (natural language)
+         │
+         ▼
+<span class="hi">LangGraph ReAct Agent</span>
+Vertex AI Gemini (via langchain-google-vertexai)
+Deployed on Vertex AI Reasoning Engine / GKE Autopilot
+         │
+         ▼
+<span class="hi3">AST Validation</span>  ← SQL parsed before execution
+DDL commands blocked: DROP / DELETE / ALTER / TRUNCATE
+Query result size hard-capped → prevents bulk data exfiltration
+         │
+         ▼
+<span class="hi2">PostgreSQL 16</span>  (Azure Flexible Server)
+Star schema + 8 analytical views + vw_fraud_signals
+         │
+         ▼
+<span class="hi">LangFuse Audit Trail</span>
+Every AI-generated query + result logged with full traceability
+Session memory via PostgresSaver (ai_user_memory table)
+         │
+         ▼
+<span class="hi3">Gradio UI</span>  (localhost:7860)
+Authenticated access — unauthenticated users blocked</pre>
+
+      <div class="two-col" style="margin-top: 8px;">
+        <div class="card t3">
+          <h4>Adversarial Hardening</h4>
+          <ul class="key-points" style="margin-top: 8px;">
+            <li><strong class="text-strong">AST-validated SQL generation</strong> — DDL injection (DROP, DELETE, ALTER) blocked at parse level before execution</li>
+            <li><strong class="text-strong">Hard-capped result sizes</strong> — prevents bulk data exfiltration through the agent interface</li>
+            <li><strong class="text-strong">LangFuse audit trail</strong> — every AI-generated query and its result logged with session scoping and full traceability</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Responsible AI Architecture</h4>
+          <ul class="key-points" style="margin-top: 8px;">
+            <li>Agent autonomously generates and executes read-only SQL — but DDL/DML (DROP, DELETE, ALTER) is rejected at the AST layer before execution, so it can query but never mutate the database</li>
+            <li>Gradio UI with authentication — no unauthenticated access to the agent interface</li>
+            <li>Persistent cross-session memory via PostgresSaver — agent maintains context across conversations</li>
+            <li>Production deployment: Docker Compose (dev) → Vertex AI Reasoning Engine / GKE Autopilot</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tech-stack" style="margin-top: 8px;">
+        <span class="badge">LangGraph</span>
+        <span class="badge">LangChain</span>
+        <span class="badge">Gemini (Vertex AI)</span>
+        <span class="badge">GKE Autopilot</span>
+        <span class="badge">PostgreSQL 16</span>
+        <span class="badge">LangFuse</span>
+        <span class="badge">Gradio</span>
+        <span class="badge">Terraform</span>
+        <span class="badge">Docker</span>
+      </div>
+
+      <a href="https://github.com/addy9051" target="_blank" rel="noopener" class="github-link" style="margin-top: 20px; display: inline-flex;">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        View on GitHub — Expense Analytics &amp; Policy Compliance
+      </a>
+    </div>
+
+    <!-- ═══ PROJECT 3: CLV DSPy LAYER ════════════════════════ -->
+    <div class="project-section t3 reveal">
+      <div class="project-label">
+        <span class="project-num">3</span>
+        <span class="label">Constrained LLM Generation</span>
+      </div>
+      <h2>CLV Predictor — DSPy Integration</h2>
+      <p class="lead">
+        Same project as Tracks 1 and 2 — presenting only the DSPy component. This is not prompt engineering.
+        This is an architectural constraint that makes LLM outputs structurally reliable. The reliability
+        comes from the system design, not from better prompts.
+      </p>
+
+      <div class="two-col">
+        <div class="card">
+          <h4>Standard LLM approach</h4>
+          <p style="font-size:14px; margin-top:8px; color: #f87171;">
+            Prompt the model with instructions and hope the output stays grounded. The model can and will
+            produce generic, hallucinated content that sounds reasonable but is not anchored to the specific account's data.
+          </p>
+        </div>
+        <div class="card t3">
+          <h4>DSPy ChainOfThought approach</h4>
+          <p style="font-size:14px; margin-top:8px;">
+            <code style="color:var(--t3-color);">dspy.ChainOfThought</code> via <code style="color:var(--t3-color);">OutreachSignature</code>
+            forces the model to reason through deterministic ML inputs (CLV Tier, Churn Risk, Recommendation Space)
+            <em>before</em> writing. Every output is anchored to specific ML predictions for a specific account.
+          </p>
+        </div>
+      </div>
+
+      <div class="sub-section"><h3>Technical Implementation</h3></div>
+      <div class="card" style="margin-bottom: 20px;">
+        <ul class="key-points">
+          <li>DSPy ChainOfThought embedded directly in the FastAPI inference service — unified container</li>
+          <li>Single <code style="color:var(--t3-color);">POST /generate/outreach</code> endpoint — zero-latency access to pre-loaded feature matrices</li>
+          <li>Azure OpenAI gpt-4o endpoint, <code style="color:var(--t3-color);">max_tokens=2048</code></li>
+          <li>Joblib scikit-learn models and DSPy logic in the same API container — no cross-service latency</li>
+        </ul>
+      </div>
+
+      <a href="https://github.com/addy9051" target="_blank" rel="noopener" class="github-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        View on GitHub — Customer Lifetime Value &amp; Cross-Sell Predictor
+      </a>
+    </div>
+
+    <!-- ═══ HUGGINGFACE MCP ════════════════════════════════════ -->
+    <div class="project-section t3 reveal" style="border-bottom: none; margin-bottom: 40px; padding-bottom: 40px;">
+      <div class="project-label">
+        <span class="project-num">4</span>
+        <span class="label">Hackathon</span>
+      </div>
+      <h2>HuggingFace MCP Hackathon — AI Wellness Application</h2>
+      <div class="card" style="margin-top: 20px;">
+        <div style="display: flex; align-items: flex-start; gap: 16px;">
+          <span style="font-size: 28px; flex-shrink: 0;">🤗</span>
+          <div>
+            <p style="font-size:14px;">
+              Participated in the inaugural HuggingFace MCP Hackathon and built an AI Wellness application
+              using <strong class="text-strong">Model Context Protocol (MCP)</strong> — Anthropic's standard
+              for how AI agents interact with tools. MCP is the emerging standard for agent-tool integration;
+              this was the first major hackathon built around it.
+            </p>
+            <div class="tech-stack" style="margin-top: 14px;">
+              <span class="badge">MCP (Model Context Protocol)</span>
+              <span class="badge">HuggingFace</span>
+            </div>
+            <div class="honest-label" style="margin-top: 14px;">
+              🏅 Credential: Hugging Face Agents Course — Certificate of Excellence
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-name">Ankit Addya</span>
+      <div class="footer-links">
+        <a href="mailto:ankit.addya@yahoo.com">ankit.addya@yahoo.com</a>
+        <a href="https://linkedin.com/in/ankit-addya-6a6b14159" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/addy9051" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <span class="footer-copy">Kolkata, India</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

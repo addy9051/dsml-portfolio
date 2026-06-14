@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Science — Ankit Addya</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html"         class="nav-link nav-home">Ankit Addya</a>
+    <a href="about.html"         class="nav-link">About</a>
+    <a href="production-ml.html" class="nav-link" data-track="1"><span class="nav-dot"></span>Production ML</a>
+    <a href="data-science.html"  class="nav-link" data-track="2"><span class="nav-dot"></span>Data Science</a>
+    <a href="ai-engineering.html"class="nav-link" data-track="3"><span class="nav-dot"></span>AI Engineering</a>
+    <a href="experience.html"    class="nav-link">Experience</a>
+    <a href="contact.html"       class="nav-link">Contact</a>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-menu-close" id="mobile-close">✕</button>
+  <a href="about.html">About</a>
+  <a href="production-ml.html">Production ML Engineering</a>
+  <a href="data-science.html">Data Science</a>
+  <a href="ai-engineering.html">AI Engineering</a>
+  <a href="experience.html">Experience</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<main>
+  <div class="page-header">
+    <div class="container">
+      <span class="track-badge" data-track="2">📊 &nbsp;Track 2</span>
+      <h1>Data Science &amp; Experimentation</h1>
+      <blockquote class="page-tagline">
+        "Rigorous modelling decisions. The right algorithm for the right problem,
+        with documented reasoning and statistically sound evaluation."
+      </blockquote>
+      <p>Modelling decisions and rationale are the hero content on this track. For each project: why the algorithm was chosen, what its assumptions are, and why the chosen evaluation metric is the right one.</p>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ═══ PROJECT 1: CLV — MODELLING ANGLE ═════════════════ -->
+    <div class="project-section t2 reveal">
+      <div class="project-label">
+        <span class="project-num">1</span>
+        <span class="label">Lead Project</span>
+      </div>
+      <h2>Customer Lifetime Value &amp; Cross-Sell Predictor</h2>
+      <p class="lead" style="font-style: italic; color: var(--text-muted);">
+        Same project as Track 1 — entirely different framing. This page covers the modelling decisions:
+        why each algorithm was chosen, what it assumes, and how evaluation was done honestly.
+        The pipeline story is on <a href="production-ml.html" style="color: var(--t2-color);">Track 1</a>.
+      </p>
+      <h3 style="font-size: 16px; color: var(--t2-color); margin-bottom: 32px;">
+        Multi-Model ML Platform — Survival Analysis, Density Clustering, and Multi-Label Propensity
+      </h3>
+
+      <!-- Decision 1: Cox PH -->
+      <div class="sub-section"><h3>Decision 1 — Cox PH for Churn (not binary classification)</h3></div>
+      <div class="two-col">
+        <div class="card t2">
+          <h4>The Modelling Decision</h4>
+          <p style="font-size:14px; margin-top:8px;">
+            Corporate travel churn is <strong class="text-strong">right-censored data</strong>. Some accounts are still active
+            at observation time — they haven't churned yet, but we don't know if or when they will.
+          </p>
+          <p style="font-size:14px; margin-top:8px;">
+            A binary classifier answers: <em style="color:var(--text);">did this account churn?</em><br>
+            Cox Proportional Hazards answers: <em style="color:var(--t2-color);">when will this account churn, and what is their hazard trajectory over the next N months?</em>
+          </p>
+          <p style="font-size:14px; margin-top:8px;">
+            That difference enables proactive intervention months before the churn event — not a post-hoc label.
+          </p>
+        </div>
+        <div class="card">
+          <h4>Evaluation — C-Index = 0.89</h4>
+          <p style="font-size:14px; margin-top:8px;">
+            Standard AUC does not apply to survival models. C-Index (Concordance Index) is the correct metric:
+            it measures what percentage of account pairs the model correctly ranks by relative churn hazard.
+          </p>
+          <p style="font-size:14px; margin-top:8px;">
+            <strong class="text-strong">C-Index = 0.89</strong> means the model correctly ranks 89% of account pairs by
+            relative churn risk. Random chance is 0.50. Perfect ranking is 1.00.
+          </p>
+          <p style="font-size:14px; margin-top:8px;">
+            Walk-forward cross-validation enforced — no temporal leakage between training and validation windows.
+          </p>
+        </div>
+      </div>
+
+      <!-- Decision 2: HDBSCAN -->
+      <div class="sub-section"><h3>Decision 2 — HDBSCAN + UMAP for Segmentation (not K-Means)</h3></div>
+      <div class="two-col">
+        <div class="card t2">
+          <h4>Why Not K-Means</h4>
+          <ul class="key-points" style="margin-top: 8px;">
+            <li><strong class="text-strong">K must be pre-specified.</strong> K-Means forces you to decide the number of segments before seeing the data. The number of natural tiers in account behaviour is an empirical question, not a modelling assumption.</li>
+            <li><strong class="text-strong">K-Means never abstains.</strong> Every account gets forced into the nearest centroid, even genuine outliers. Noise is indistinguishable from cluster members.</li>
+            <li><strong class="text-strong">Centroid geometry.</strong> K-Means assumes spherical, equal-variance clusters. Account behaviour does not satisfy this.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Why HDBSCAN + UMAP</h4>
+          <ul class="key-points" style="margin-top: 8px;">
+            <li><strong class="text-strong">HDBSCAN discovers K from data density.</strong> Three tiers (At-Risk, Core, Growth) emerged organically — not from a pre-set parameter.</li>
+            <li><strong class="text-strong">Noise isolation.</strong> Outlier accounts are labelled as noise and excluded — they don't corrupt segment profiles.</li>
+            <li><strong class="text-strong">UMAP before clustering.</strong> Preserves non-linear manifold structure better than PCA, which only captures linear variance. UMAP then feeds into HDBSCAN's density estimation.</li>
+            <li>Result: <strong class="text-strong">Silhouette = 0.77</strong></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Decision 3: Multi-Output XGBoost -->
+      <div class="sub-section"><h3>Decision 3 — Multi-Output XGBoost for Cross-Sell (not 5 separate models)</h3></div>
+      <div class="card t2" style="margin-bottom: 24px;">
+        <div class="two-col" style="margin: 0;">
+          <div>
+            <h4 style="margin-bottom: 10px;">The Alternative Rejected</h4>
+            <p style="font-size:14px;">
+              Five separate binary classifiers — one per product (Neo, Expense, Consulting, etc.). Each trained
+              independently, each with its own feature matrix, each requiring its own inference call.
+            </p>
+            <p style="font-size:14px; margin-top: 8px; color: #f87171;">
+              Downsides: 5× API latency, 5× model artifacts to govern, and no cross-product correlation
+              signal during training.
+            </p>
+          </div>
+          <div>
+            <h4 style="margin-bottom: 10px;">The Decision Made</h4>
+            <p style="font-size:14px;">
+              Single multi-label XGBoost model outputs independent propensity scores for all products
+              in a single inference call.
+            </p>
+            <ul class="key-points" style="margin-top: 8px;">
+              <li>Single model artifact to version and govern in MLflow</li>
+              <li>Implicit learning of inter-product correlations during training</li>
+              <li>Single POST to <code style="font-size:12px; color:var(--t2-color);">/predict/cross-sell</code> returns all product scores</li>
+              <li><strong class="text-strong">AUC = 0.92+</strong> across product set with calibrated propensity scores</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decision 4: LightGBM -->
+      <div class="sub-section"><h3>Decision 4 — LightGBM for CLV Regression (not linear regression or deep learning)</h3></div>
+      <div class="card" style="margin-bottom: 24px;">
+        <p style="font-size:14px; margin-bottom: 12px;">
+          Tabular transaction data is noisy, has missing values, and has complex non-linear feature interactions
+          that linear models cannot capture. Deep learning requires far more data and interpretability becomes a problem.
+        </p>
+        <div class="three-col" style="margin: 0;">
+          <div>
+            <h4 style="font-size:13px; color:var(--t2-color); margin-bottom:6px;">Native handling</h4>
+            <p style="font-size:13px;">LightGBM handles missing values and noisy features natively — no imputation preprocessing step required.</p>
+          </div>
+          <div>
+            <h4 style="font-size:13px; color:var(--t2-color); margin-bottom:6px;">SHAP explainability</h4>
+            <p style="font-size:13px;">SHAP feature importance explains <em>why</em> each account has a specific CLV — essential for account manager trust.</p>
+          </div>
+          <div>
+            <h4 style="font-size:13px; color:var(--t2-color); margin-bottom:6px;">Results</h4>
+            <p style="font-size:13px;"><strong class="text-strong">R² = 0.61, MAE = $14.8K</strong> on 42 engineered features. Bayesian hyperparameter optimisation (Optuna). Walk-forward CV.</p>
+          </div>
+        </div>
+      </div>
+
+      <a href="https://github.com/addy9051" target="_blank" rel="noopener" class="github-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        View on GitHub — Customer Lifetime Value &amp; Cross-Sell Predictor
+      </a>
+    </div>
+
+    <!-- ═══ PROJECT 2: PLAYER CHURN — EXPERIMENTATION ANGLE ══ -->
+    <div class="project-section t2 reveal">
+      <div class="project-label">
+        <span class="project-num">2</span>
+        <span class="label">Experimentation</span>
+      </div>
+      <h2>Player Churn Prediction — Experimentation Angle</h2>
+      <p class="lead" style="font-style: italic; color: var(--text-muted);">
+        Same project as Track 1 — different framing. This page covers the experimentation decisions:
+        problem reframing, custom evaluation metric design, and A/B test structure.
+        The serving infrastructure story is on <a href="production-ml.html" style="color:var(--t2-color);">Track 1</a>.
+      </p>
+      <h3 style="font-size: 16px; color: var(--t2-color); margin-bottom: 32px;">
+        Experimentation Design — Problem Reframing, Revenue-Weighted Evaluation, ROI-Gated Targeting
+      </h3>
+
+      <div class="sub-section"><h3>Problem Reframing — Changing the Target Variable</h3></div>
+      <div class="card t2" style="margin-bottom: 24px;">
+        <div class="two-col" style="margin: 0;">
+          <div>
+            <h4 style="margin-bottom: 8px; color: #f87171;">Standard definition (rejected)</h4>
+            <p style="font-size:14px;">
+              Churn = player has already left. Label assigned retrospectively. A model trained on this
+              definition learns to identify who left — useful for post-hoc analysis, not for intervention.
+            </p>
+          </div>
+          <div>
+            <h4 style="margin-bottom: 8px; color: var(--t2-color);">Reframed definition (adopted)</h4>
+            <p style="font-size:14px;">
+              Churn = <code style="color:var(--t2-color);">DaysSinceLastLogin &gt; 14</code>. A predictive
+              leading indicator. The model learns to identify players heading toward disengagement
+              while there is still time to intervene.
+            </p>
+          </div>
+        </div>
+        <p style="font-size:13px; margin-top:16px; color:var(--text-muted);">
+          This is an analytical insight — changing the definition of the target variable changes what the model
+          optimises for. Same data, same algorithm, different prediction horizon and very different product utility.
+        </p>
+      </div>
+
+      <div class="sub-section"><h3>Revenue-Weighted AUC — Aligning the Loss Function to Business Cost</h3></div>
+      <div class="two-col">
+        <div class="card">
+          <h4>Standard AUC</h4>
+          <p style="font-size:14px; margin-top:8px;">
+            Penalises all false negatives equally. Missing a low-value player and missing a high-spend
+            "whale" player have the same cost in the objective function. This is wrong.
+          </p>
+        </div>
+        <div class="card t2">
+          <h4>Revenue-Weighted AUC</h4>
+          <p style="font-size:14px; margin-top:8px;">
+            False negatives on high-<code style="color:var(--t2-color);">InGamePurchases</code> players
+            are penalised more heavily. The model's objective function matches the actual business
+            cost function — missing a whale costs more than missing a minnow.
+          </p>
+          <p style="font-size:14px; margin-top:8px;">
+            Implemented in <code style="color:var(--t2-color);">evaluate_model.py</code> as a custom
+            sample-weight scheme on the ROC computation.
+          </p>
+        </div>
+      </div>
+
+      <div class="sub-section"><h3>A/B Experimentation Design</h3></div>
+      <div class="three-col">
+        <div class="card t2">
+          <h4>Expected Value Targeting</h4>
+          <p style="font-size:14px; margin-top:8px;">
+            Intervention decision rule:<br>
+            <code style="font-size:12px; color:var(--t2-color); display:block; margin: 10px 0; line-height:1.8;">
+              (Churn_Prob × LTV)<br>− Campaign_Cost<br>&gt; ROI_Threshold
+            </code>
+            Concentrates retention spend on profitable Whales rather than broadcasting uniformly.
+          </p>
+        </div>
+        <div class="card">
+          <h4>ROI-Gated Cohort Selection</h4>
+          <ul class="key-points" style="margin-top:8px;">
+            <li>The Expected Value rule is wired into the A/B testing clustering logic in code — it decides which players enter an intervention cohort</li>
+            <li>Spend is gated to players where predicted ROI clears the threshold, so the treatment population is selected by profitability, not broadcast</li>
+            <li>The framework is built to support a controlled lift test; a completed power analysis with significance results is future work, not a claimed result</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Telemetry &amp; Drift</h4>
+          <ul class="key-points" style="margin-top:8px;">
+            <li>Async prediction logging captures player ID, churn probability, LTV score, and timestamp</li>
+            <li>Enables downstream lift analysis on the intervention cohort</li>
+            <li>Enables detection of model performance degradation over time (covariate drift)</li>
+          </ul>
+        </div>
+      </div>
+
+      <a href="https://github.com/addy9051" target="_blank" rel="noopener" class="github-link" style="margin-top: 20px; display: inline-flex;">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        View on GitHub — Player Churn Prediction &amp; Engagement Optimization Platform
+      </a>
+    </div>
+
+    <!-- ═══ PROJECT 3: CARDIAC SEGMENTATION ══════════════════ -->
+    <div class="project-section t2 reveal">
+      <div class="project-label">
+        <span class="project-num">3</span>
+        <span class="label">Deep Learning</span>
+      </div>
+      <span class="honest-label">🎓 IBM Data Science Professional Certificate Capstone — Academic Project</span>
+      <h2>Advanced Cardiac Segmentation for Clinical Echocardiography</h2>
+      <p class="lead">
+        Comparative evaluation of 3 deep learning architectures for automated Left Ventricle and Left Atrium
+        segmentation in 2D echocardiograms. The core finding: loss function engineering provided a higher
+        performance gain than architectural complexity for this segmentation task.
+      </p>
+
+      <div class="metrics-row">
+        <div class="metric-chip">
+          <span class="metric-val hl-t2">0.8509</span>
+          <span class="metric-label">mIoU (best model)</span>
+        </div>
+        <div class="metric-chip">
+          <span class="metric-val hl-t2">0.9147</span>
+          <span class="metric-label">Dice Coefficient</span>
+        </div>
+        <div class="metric-chip">
+          <span class="metric-val hl-t2">&gt;96%</span>
+          <span class="metric-label">Pixel Accuracy</span>
+        </div>
+        <div class="metric-chip">
+          <span class="metric-val hl-t2">0.0979→0.0540</span>
+          <span class="metric-label">Val Loss Reduction</span>
+        </div>
+        <div class="metric-chip">
+          <span class="metric-val hl-t2">500</span>
+          <span class="metric-label">Unique Patients</span>
+        </div>
+        <div class="metric-chip">
+          <span class="metric-val hl-t2">2,000</span>
+          <span class="metric-label">Image-Mask Pairs</span>
+        </div>
+      </div>
+
+      <div class="sub-section"><h3>Architecture Comparison</h3></div>
+      <table class="data-table">
+        <thead>
+          <tr><th>Model</th><th>Loss Function</th><th>mIoU</th><th>Dice Coefficient</th><th>Val Loss</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Baseline — U-Net</td>
+            <td>Cross-Entropy</td>
+            <td>0.8453</td>
+            <td>0.9112</td>
+            <td>0.0979</td>
+          </tr>
+          <tr>
+            <td>Advanced — Attention U-Net</td>
+            <td>Cross-Entropy</td>
+            <td>0.8471</td>
+            <td>0.9122</td>
+            <td>0.0966</td>
+          </tr>
+          <tr>
+            <td style="color:var(--t2-color); font-weight:700;">Optimised — U-Net + Dice+Focal</td>
+            <td style="color:var(--t2-color);">Dice + Focal Loss</td>
+            <td class="score-improved">0.8509</td>
+            <td class="score-improved">0.9147</td>
+            <td class="score-improved">0.0540</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="card t2" style="margin: 28px 0;">
+        <h4>Key Finding — Loss Function Engineering &gt; Architectural Complexity</h4>
+        <p style="font-size:14px; margin-top:10px;">
+          Moving from U-Net to Attention U-Net (adding spatial attention gates) improved mIoU by only
+          <strong class="text-strong">0.0018</strong>. Moving from Cross-Entropy to Dice + Focal Loss
+          improved mIoU by <strong class="text-strong">0.0056</strong> — roughly 3× the gain of the
+          architectural upgrade.
+        </p>
+        <p style="font-size:14px; margin-top:8px;">
+          The reason: the dataset has severe class imbalance between background pixels and thin structures
+          like the myocardial wall. Standard Cross-Entropy treats every pixel equally. Dice + Focal Loss
+          addresses this directly.
+        </p>
+      </div>
+
+      <div class="sub-section"><h3>Why Dice + Focal Loss</h3></div>
+      <div class="two-col">
+        <div class="card">
+          <h4>Dice Loss</h4>
+          <p style="font-size:14px; margin-top:8px;">
+            Measures overlap between predicted mask and ground truth mask. Directly penalises
+            under-segmentation of small structures (the thin myocardial wall) where pixel count
+            is low but clinical importance is high.
+          </p>
+        </div>
+        <div class="card">
+          <h4>Focal Loss</h4>
+          <p style="font-size:14px; margin-top:8px;">
+            Down-weights easy negatives (background pixels) so the model focuses training signal
+            on hard positives (thin wall pixels). Modulating factor (1-pₜ)² ensures the loss
+            is concentrated where the model is currently wrong.
+          </p>
+        </div>
+      </div>
+
+      <div class="sub-section"><h3>Data Split — Patient-Level (not Record-Level)</h3></div>
+      <div class="card" style="margin-bottom: 20px;">
+        <p style="font-size:14px;">
+          <strong class="text-strong">80/10/10 patient-level split</strong> (400 / 50 / 50 patients → 1600 / 200 / 200 image-mask pairs).
+          A random record-level split would allow the same patient's images to appear in both training and test sets,
+          inflating evaluation metrics through data leakage. Patient-level splitting prevents this entirely.
+        </p>
+        <p style="font-size:14px; margin-top:8px;">
+          Dataset: CAMUS (shoybhasan/camus-human-heart-data) — 6,000 NIfTI image-mask pairs across 500 patients.
+          2CH and 4CH echocardiographic views, ED and ES frames. 4 segmentation classes: background, LV endocardium,
+          LV myocardium, Left Atrium.
+        </p>
+      </div>
+
+      <div class="tech-stack">
+        <span class="badge">PyTorch</span>
+        <span class="badge">U-Net</span>
+        <span class="badge">Attention U-Net</span>
+        <span class="badge">Dice Loss</span>
+        <span class="badge">Focal Loss</span>
+        <span class="badge">NIfTI / nibabel</span>
+        <span class="badge">Albumentations</span>
+        <span class="badge">Google Colab (GPU)</span>
+      </div>
+    </div>
+
+    <!-- ═══ PROFESSIONAL WORK ══════════════════════════════════ -->
+    <div class="pro-work-section reveal">
+      <span class="pro-badge">💼 Professional Work — Decimal Point Analytics</span>
+      <h2 style="margin-bottom: 8px;">Employment Evidence</h2>
+      <p style="font-size: 15px; color: var(--text-muted); max-width: 680px;">
+        Built in a real commercial context for B2B FinTech clients. Not personal projects. Code is not on GitHub.
+      </p>
+
+      <div class="pro-work-grid">
+        <div class="pro-project">
+          <h4>CreditPulse — NLP Credit Risk Classification</h4>
+          <div class="employer">Decimal Point Analytics &nbsp;·&nbsp; Jun 2022 – Nov 2022</div>
+          <ul>
+            <li>NLP text classification: High Risk vs Low Risk for upcoming 2–3 quarters</li>
+            <li>10 years of unstructured financial market data</li>
+            <li>Feature extraction: TF-IDF vectorisation + BERT embeddings</li>
+            <li>90%+ accuracy on test datasets</li>
+            <li>Standardised data labelling via SOPs with subject matter experts</li>
+            <li>Automated training-data collection via Power Automate</li>
+          </ul>
+          <div class="tech-stack" style="margin-top: 14px;">
+            <span class="badge">NLP</span><span class="badge">BERT</span>
+            <span class="badge">TF-IDF</span><span class="badge">SQL</span>
+          </div>
+        </div>
+        <div class="pro-project">
+          <h4>FidelityPulse — Fraud Detection</h4>
+          <div class="employer">Decimal Point Analytics &nbsp;·&nbsp; Jun 2022 – Nov 2022</div>
+          <ul>
+            <li>ML-powered fraud detection for a financial services B2B client</li>
+            <li>Accuracy improved 85% → 92% through feature engineering — not algorithm switching</li>
+            <li>21 behavioural and transactional signals via PySpark Window API</li>
+            <li>Led a 4-analyst workstream</li>
+          </ul>
+          <div class="tech-stack" style="margin-top: 14px;">
+            <span class="badge">Databricks</span><span class="badge">PySpark</span>
+            <span class="badge">ETL</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-name">Ankit Addya</span>
+      <div class="footer-links">
+        <a href="mailto:ankit.addya@yahoo.com">ankit.addya@yahoo.com</a>
+        <a href="https://linkedin.com/in/ankit-addya-6a6b14159" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/addy9051" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <span class="footer-copy">Kolkata, India</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
