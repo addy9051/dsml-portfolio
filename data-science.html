@@ -411,6 +411,160 @@
       </div>
     </div>
 
+    <!-- ═══ PROJECT 4: SWIGGY INSTAMART STRATEGY ═════════════ -->
+    <div class="project-section t2 reveal">
+      <div class="project-label">
+        <span class="project-num">4</span>
+        <span class="label">Strategy Simulation</span>
+      </div>
+      <span class="honest-label">📊 Competitive strategy case study — simulations calibrated to public disclosures, presented as decision maps, not point forecasts</span>
+      <h2 style="margin-top: 16px;">Quick-Commerce Strategy — Swiggy Instamart vs Blinkit</h2>
+      <p class="lead">
+        An equity-research-style diagnosis of why Swiggy Instamart's path to profitability lags Blinkit's:
+        a 7-branch MECE issue tree, 20 falsifiable hypotheses tested against real disclosures from Swiggy,
+        Blinkit, and Zepto, then three strategy simulations — each modelled with the technique its question
+        actually calls for. The modelling angle: why reinforcement learning, uplift modelling, and system
+        dynamics, rather than a spreadsheet forecast.
+      </p>
+
+      <div class="metrics-row">
+        <div class="metric-chip">
+          <span class="metric-val hl-t2">34.3%→20.9%</span>
+          <span class="metric-label">Instamart order share of top-3 (FY24→FY26)</span>
+        </div>
+        <div class="metric-chip">
+          <span class="metric-val hl-t2">20</span>
+          <span class="metric-label">Falsifiable hypotheses across 5 tested branches</span>
+        </div>
+        <div class="metric-chip">
+          <span class="metric-val hl-t2">ρ=0.88</span>
+          <span class="metric-label">X-Learner uplift rank vs ground truth (Spearman)</span>
+        </div>
+        <div class="metric-chip">
+          <span class="metric-val hl-t2">97%</span>
+          <span class="metric-label">Futures where "hold density" beats expansion (2,000 sims)</span>
+        </div>
+      </div>
+
+      <!-- Decision 1: RL / PPO -->
+      <div class="sub-section"><h3>Decision 1 — Reinforcement Learning (PPO) for the transition-pace question</h3></div>
+      <div class="two-col">
+        <div class="card t2">
+          <h4>Why a sequential decision model, not a static NPV</h4>
+          <p style="font-size:14px; margin-top:8px;">
+            "How fast should Instamart transition to Blinkit's inventory-led model?" is a
+            <strong class="text-strong">budget-constrained sequential decision</strong> — every rupee spent on the
+            transition is a rupee not spent densifying existing stores, and the payoff compounds over quarters.
+            A single-shot NPV can't capture that trade-off across time.
+          </p>
+          <p style="font-size:14px; margin-top:8px;">
+            Framed as a Markov Decision Process and solved with <strong class="text-strong">PPO</strong>
+            (Stable-Baselines3 + Gymnasium): the agent learns the optimal quarter-by-quarter pace.
+          </p>
+        </div>
+        <div class="card">
+          <h4>Result — and the honest caveat</h4>
+          <ul class="key-points" style="margin-top: 8px;">
+            <li>Optimal policy: <strong class="text-strong">front-load ~6 quarters, then hold</strong> — distils to a 3-rule decision tree at 100% fidelity, beating both naive baselines and a hand-written rule</li>
+            <li>Reaches +5% margin and pulls breakeven forward in 100% of episodes</li>
+            <li><strong class="text-strong">The decision flips to "don't transition"</strong> when transition cost is high or market share is prioritised over margin — reported, not hidden</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Decision 2: Uplift / X-Learner -->
+      <div class="sub-section"><h3>Decision 2 — X-Learner Uplift for cross-sell targeting (not a response model)</h3></div>
+      <div class="card t2" style="margin-bottom: 24px;">
+        <div class="two-col" style="margin: 0;">
+          <div>
+            <h4 style="margin-bottom: 10px; color: #f87171;">Response model rejected</h4>
+            <p style="font-size:14px;">
+              A standard propensity model ranks users by <code style="font-size:12px;">P(convert)</code> — but that
+              targets people who would convert <em>anyway</em>, wasting the nudge. The business question is causal:
+              who is genuinely <em>moved</em> by the intervention?
+            </p>
+          </div>
+          <div>
+            <h4 style="margin-bottom: 10px; color: var(--t2-color);">X-Learner uplift adopted</h4>
+            <p style="font-size:14px;">
+              An X-Learner (CausalML) estimates the <strong class="text-strong">CATE</strong> — the individual
+              treatment effect — ranking Swiggy's 18.3M food-delivery base by incremental lift, not raw conversion.
+            </p>
+            <ul class="key-points" style="margin-top: 8px;">
+              <li>Validated at <strong class="text-strong">Spearman ρ = 0.88</strong> against ground-truth uplift</li>
+              <li><strong class="text-strong">+27%</strong> incremental revenue vs a random mass campaign of identical cost</li>
+              <li>Monte Carlo sizes the prize (+₹1,255cr GOV at P50) with honest uncertainty bands; gated on a ~1,800-user A/B pilot</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decision 3: System Dynamics + PRIM -->
+      <div class="sub-section"><h3>Decision 3 — System Dynamics + Scenario Discovery (PRIM) under deep uncertainty</h3></div>
+      <div class="card" style="margin-bottom: 24px;">
+        <p style="font-size:14px; margin-bottom: 12px;">
+          "Should Swiggy hold expansion and grow density first?" involves feedback loops (density → margin → capex → density)
+          and irreducible uncertainty in the coefficients. A point forecast would be false precision. Instead: a stock-and-flow
+          model swept across <strong class="text-strong">2,000 plausible futures</strong> with Latin-hypercube sampling, then mined
+          with <strong class="text-strong">PRIM scenario discovery</strong> to find <em>where</em> holding actually wins.
+        </p>
+        <div class="three-col" style="margin: 0;">
+          <div>
+            <h4 style="font-size:13px; color:var(--t2-color); margin-bottom:6px;">The robust decision</h4>
+            <p style="font-size:13px;">Holding reaches breakeven sooner than expansion in <strong class="text-strong">97% of 2,000 futures</strong> — a success region PRIM and a random forest independently confirm.</p>
+          </div>
+          <div>
+            <h4 style="font-size:13px; color:var(--t2-color); margin-bottom:6px;">Worth</h4>
+            <p style="font-size:13px;">~₹600cr extra cumulative contribution, plus ~₹190cr/quarter of expansion capex freed to fund densification.</p>
+          </div>
+          <div>
+            <h4 style="font-size:13px; color:var(--t2-color); margin-bottom:6px;">Stress-tested</h4>
+            <p style="font-size:13px;">The synthesis erodes "97%" to ~72% once competitor demand-capture is unfrozen — it bends the edge but doesn't break it.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analytical honesty -->
+      <div class="sub-section"><h3>Analytical Rigor — Reporting Weakness Honestly</h3></div>
+      <div class="two-col">
+        <div class="card">
+          <h4>A weak regression, reported as weak</h4>
+          <p style="font-size:14px; margin-top:8px;">
+            The cross-player density-vs-loss fit on <strong class="text-strong">n=3</strong> firms is
+            <strong class="text-strong">R²=0.04</strong> — and the writeup says so plainly. Zepto has the highest
+            density yet nearly the worst per-order loss (₹78.75 vs Instamart's ₹85.18); mid-density Blinkit posts
+            by far the best (₹3.02). Density matters, but business model matters more — the opposite of the tidy story.
+          </p>
+        </div>
+        <div class="card">
+          <h4>Simulations labelled as method, not evidence</h4>
+          <p style="font-size:14px; margin-top:8px;">
+            Every model is calibrated to disclosed aggregates and is explicit about which coefficients are estimates.
+            A 1,143-store synthetic dataset (R²=0.42) demonstrates a within-network regression real data can't — and is
+            flagged as a methodology exhibit, never as evidence. Every figure is tagged: disclosed, analyst-estimated, or derived.
+          </p>
+        </div>
+      </div>
+
+      <div class="tech-stack" style="margin-top: 24px;">
+        <span class="badge">Python</span>
+        <span class="badge">Stable-Baselines3 (PPO)</span>
+        <span class="badge">Gymnasium</span>
+        <span class="badge">CausalML (X-Learner)</span>
+        <span class="badge">EMA Workbench (PRIM)</span>
+        <span class="badge">BPTK-Py</span>
+        <span class="badge">scikit-learn</span>
+        <span class="badge">SciPy</span>
+        <span class="badge">pandas / NumPy</span>
+        <span class="badge">Jupyter</span>
+      </div>
+
+      <a href="https://github.com/addy9051/swiggy_instamart_quick_commerce_strategy" target="_blank" rel="noopener" class="github-link" style="margin-top: 20px; display: inline-flex;">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        View on GitHub — Swiggy Instamart Quick-Commerce Strategy
+      </a>
+    </div>
+
     <!-- ═══ PROFESSIONAL WORK ══════════════════════════════════ -->
     <div class="pro-work-section reveal">
       <span class="pro-badge">💼 Professional Work — Decimal Point Analytics</span>
