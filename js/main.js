@@ -42,10 +42,57 @@ function initNavScroll() {
   }, { passive: true });
 }
 
+/* ─── Animated project counters ────────────────────────────── */
+function initCounters() {
+  const nums = document.querySelectorAll('.count-num');
+  if (!nums.length) return;
+
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+
+  const countTarget = (el) => {
+    // Explicit target wins; otherwise derive the *live* count — either from a
+    // CSS selector (e.g. the page's project sections) or a track card's list —
+    // so the number stays in sync with the actual content.
+    const explicit = parseInt(el.dataset.count, 10);
+    if (!isNaN(explicit)) return explicit;
+    if (el.dataset.countSelector) {
+      return document.querySelectorAll(el.dataset.countSelector).length;
+    }
+    const card = el.closest('.track-card');
+    const list = card && card.querySelector('.track-projects');
+    if (!list) return 0;
+    return list.textContent.split('·').filter(s => s.trim().length).length;
+  };
+
+  const animate = (el, target) => {
+    if (prefersReduced || target <= 0) { el.textContent = target; return; }
+    const duration = 900, start = performance.now();
+    const step = (now) => {
+      const p = Math.min((now - start) / duration, 1);
+      el.textContent = Math.round(easeOutCubic(p) * target);
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    };
+    requestAnimationFrame(step);
+  };
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      animate(e.target, countTarget(e.target));
+      obs.unobserve(e.target);
+    });
+  }, { threshold: 0.5 });
+
+  nums.forEach(n => { n.textContent = '0'; obs.observe(n); });
+}
+
 /* ─── init ─────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   setActiveNav();
   initMobileMenu();
   initReveal();
   initNavScroll();
+  initCounters();
 });

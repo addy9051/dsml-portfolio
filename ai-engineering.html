@@ -42,18 +42,372 @@
         "Production AI systems. LangGraph multi-agent pipelines, Hybrid RAG with measured recall,
         online RL with A/B validation — deployed on GKE with full observability."
       </blockquote>
-      <p>The 24/7 SRE Agent System is the centrepiece of this track. Everything else provides supporting context.</p>
+      <p>True-Texture and LoanLens lead this track; the 24/7 SRE Agent System that follows is the most in-depth, full-page treatment.</p>
+      <div class="header-count" data-track="3">
+        <span class="count-num" data-count-selector=".project-section">0</span>
+        <span class="count-word">Projects</span>
+      </div>
     </div>
   </div>
 
   <div class="container">
 
-    <!-- ═══════════════════════════════════════════════════════
-         PROJECT 1: SRE AGENT SYSTEM (CROWN JEWEL)
-         ═══════════════════════════════════════════════════════ -->
+    <!-- ═══ PROJECT 1: TRUE-TEXTURE — RETURNS CONCIERGE ═════ -->
     <div class="project-section t3 reveal">
       <div class="project-label">
         <span class="project-num">1</span>
+        <span class="label">Multi-Agent · Tool-Use · Staged Agent Memory</span>
+      </div>
+      <span class="honest-label">🧪 Prototype on the public Amazon Reviews 2023 dataset — heuristic fabric ontology (not lab-grade textile physics); market figures are sourced 2026 estimates and the business impact is a labelled projection, not a measured A/B</span>
+      <h2 style="margin-top: 16px;">True-Texture — A Returns Concierge that Diagnoses Fabric Mismatch</h2>
+      <p class="lead">
+        Fashion returns run 25–35% in India, and a large slice is "the fabric feels nothing like the listing." True-Texture
+        is a returns concierge that interrogates the buyer at return time and separates three look-alike causes a dropdown
+        can't — fibre <em>substitution</em>, <em>low-grade</em> genuine fibre, and <em>wrong-weather</em> usage — grounding
+        every diagnosis in a two-axis material ontology. Built provider-agnostic (Groq / Gemini / Bedrock behind one
+        interface) after AWS and Google both blocked the account at the billing layer — and it kept running at $0.
+      </p>
+
+      <div class="metrics-row">
+        <div class="metric-chip">
+          <span class="metric-val hl-t3">9 in 10</span>
+          <span class="metric-label">complaint flags correct (cut-off calibrated on 48K sentences)</span>
+        </div>
+        <div class="metric-chip">
+          <span class="metric-val hl-t3">4</span>
+          <span class="metric-label">look-alike return causes told apart</span>
+        </div>
+        <div class="metric-chip">
+          <span class="metric-val hl-t3">98%</span>
+          <span class="metric-label">catalog fabrics grounded (12 fibres × 23 weaves)</span>
+        </div>
+        <div class="metric-chip">
+          <span class="metric-val hl-t3">$0</span>
+          <span class="metric-label">cloud spend — free-tier / local stack</span>
+        </div>
+      </div>
+
+      <div class="sub-section" style="margin-top: 40px;"><h3 style="color: var(--t3-color);">A — Agent Pipeline</h3></div>
+      <pre class="arch-diagram">
+<span class="hi3">Amazon Reviews 2023</span>  (public · 2.5M reviews · no scraping)
+         │
+         ▼
+<span class="hi2">MiniLM semantic filter</span>  →  fabric-feel sentences
+  similarity cut-off calibrated on 48,040 sentences  (≈50% → ≈90% precision)
+         │
+         ▼
+<span class="hi">Diagnosis engine</span>  →  claimed material vs reported feel
+  negation gate · rating gate · substitution signatures
+         │
+         ▼
+<span class="hi3">Returns Concierge</span>  (Groq / Gemini / Bedrock — one duck-typed interface)
+  tool-use: ask_question (≤3 adaptive Qs) → forced submit_diagnosis
+  grounded on fibre ontology (12) + weave ontology (23) + category priors (93)
+         │
+         ▼  feel × weather
+<span class="hi">2×2 response matrix</span>  →  structured diagnosis + customer message
+  substitution→audit · low-grade→source premium · wrong-weather→educate · fine→no-action
+         │
+         ▼
+<span class="hi2">SQLite episodic store</span>  →  <span class="hi3">Streamlit seller dashboard</span></pre>
+
+      <div class="sub-section"><h3 style="color: var(--t3-color);">B — Structured Interview via Forced Tool-Use</h3></div>
+      <div class="two-col">
+        <div class="card t3">
+          <h4>Structure is enforced, not hoped for</h4>
+          <ul class="key-points" style="margin-top: 8px;">
+            <li>The concierge can only reply through two tools — <code style="font-size:11px;">ask_question</code> (option chips + free text) and <code style="font-size:11px;">submit_diagnosis</code> (typed schema)</li>
+            <li>After the question budget, <code style="font-size:11px;">toolChoice</code> is <strong class="text-strong">forced</strong> to submit — the model can't ramble past ≤3 questions</li>
+            <li><strong class="text-strong">Dual transport:</strong> native function-calling, with an automatic JSON-protocol fallback for accounts/models that reject tool configs (observed on a restricted Bedrock account)</li>
+            <li>Ground truth is <strong class="text-strong">injected by the engine</strong> after the call — the seller always sees claim-vs-experience, regardless of what the model chose to mention</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>The 2×2 response matrix (feel × weather)</h4>
+          <ul class="key-points" style="margin-top: 8px;">
+            <li><strong class="text-strong">Feel bad, weather OK</strong> → substitution or low-grade fibre → <code style="font-size:11px;">SUPPLY_CHAIN_AUDIT</code> / <code style="font-size:11px;">QUALITY_IMPROVEMENT</code></li>
+            <li><strong class="text-strong">No feel issue, wrong weather</strong> → usage, not defect → <code style="font-size:11px;">LISTING_FIX</code> + educate the buyer (layering tip)</li>
+            <li><strong class="text-strong">Both</strong> → apologise, state material + ideal weather, mitigate the defect</li>
+            <li><strong class="text-strong">Neither</strong> → a sound product returned anyway → <code style="font-size:11px;">NO_ACTION</code>; escalate to the distributor only past a returns threshold</li>
+          </ul>
+        </div>
+      </div>
+      <p style="font-size:13px; color: var(--text-muted); margin-top: 14px; line-height:1.7;">
+        The two ontology axes are orthogonal and the weave can override the fibre: on a live run, a cotton/polyester
+        <em>fleece</em> worn on a hot day flagged a weather mismatch even though the cotton fibre is hot-ideal — because the
+        fleece construction traps heat. All four matrix cases were verified on live model runs.
+      </p>
+
+      <div class="sub-section" style="margin-top: 40px;"><h3 style="color: var(--t3-color);">C — Staged Three-Tier Agent Memory</h3>
+        <p>The judgment that reads as senior here is knowing <em>when not</em> to reach for a vector database — infrastructure is added only where the simple approach breaks.</p>
+      </div>
+      <div class="three-col">
+        <div class="card t3">
+          <h4>Semantic — durable facts</h4>
+          <p style="font-size:13px; margin-top:6px;">Fibre + weave ontology and category priors, injected as JSON. <strong class="text-strong">No RAG:</strong> 35 curated facts are faster and more reliable injected than retrieved — and stay git-diffable.</p>
+        </div>
+        <div class="card">
+          <h4>Procedural — how to act</h4>
+          <p style="font-size:13px; margin-top:6px;">The interview policy + response matrix live in a versioned <code style="font-size:11px;">skill.md</code>, loaded every turn — policy separated from code, iterable without touching Python.</p>
+        </div>
+        <div class="card">
+          <h4>Episodic — dated events</h4>
+          <p style="font-size:13px; margin-top:6px;">Every session in SQLite with SQL recency (by ASIN / date / case). A <code style="font-size:11px;">pgvector</code> relevance store is a documented Stage 2, behind the same persistence interface.</p>
+        </div>
+      </div>
+
+      <div class="sub-section" style="margin-top: 40px;"><h3 style="color: var(--t3-color);">D — The Honest Negative Result: CLIP Can't See Texture</h3></div>
+      <div class="card" style="margin-bottom: 20px;">
+        <p style="font-size:14px;">
+          The tempting feature is "compare the listing photo to the customer photo with CLIP and flag big differences."
+          I tested it <strong class="text-strong">against a control group</strong> of products nobody complains about, in two conditions:
+        </p>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr><th>Condition</th><th>Flagged (n=10)</th><th>Control (n=10)</th><th>Separates?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Whole frame</td><td>CLIP 0.648 · colourΔ 0.689</td><td>CLIP 0.659 · colourΔ 0.598</td><td style="color:#f87171;">No ✗</td></tr>
+          <tr><td>Garment crops (rembg)</td><td>CLIP 0.727 · colourΔ 0.711</td><td>CLIP 0.738 · colourΔ 0.686</td><td style="color:#f87171;">No ✗</td></tr>
+        </tbody>
+      </table>
+      <div class="card t3" style="margin: 20px 0;">
+        <h4>The distributions overlap — and that <em>is</em> the finding</h4>
+        <p style="font-size:14px; margin-top:10px;">
+          Photo-level appearance comparison can't see texture: nuisance variation (lighting, pose, background, phone-vs-studio)
+          dwarfs any real fabric difference, and the popular "flag if CLIP &lt; 0.75" heuristic fires on <strong class="text-strong">20 of 20</strong>
+          products. So the visual channel is demoted to corroboration only, text stays the primary signal, and I kept the negative
+          result rather than dressing up a detector that flags everything. Multimodal-LLM comparison (describe the difference in
+          <em>words</em>) is the documented next avenue.
+        </p>
+      </div>
+
+      <div class="sub-section" style="margin-top: 40px;"><h3 style="color: var(--t3-color);">E — Key Technical Decisions</h3></div>
+      <div class="two-col">
+        <div class="decision-card">
+          <div class="decision-label">Decision 1</div>
+          <h4>Inject the ontology vs Bedrock Knowledge Base (RAG)</h4>
+          <div class="decision-row" style="margin-top: 12px;">
+            <div class="rejected">✗ &nbsp;Bedrock KB / vector RAG — rejected</div>
+            <div class="chosen">✓ &nbsp;Ontology injected into the prompt — chosen</div>
+            <div class="reason">The KB's managed vector store alone would burn the whole $100 budget; 35 curated facts fit in-context and retrieve without miss-risk, and stay auditable in git.</div>
+          </div>
+        </div>
+        <div class="decision-card">
+          <div class="decision-label">Decision 2</div>
+          <h4>Provider abstraction vs single-vendor SDK</h4>
+          <div class="decision-row" style="margin-top: 12px;">
+            <div class="rejected">✗ &nbsp;Hard-wire one LLM SDK — rejected</div>
+            <div class="chosen">✓ &nbsp;One duck-typed interface, env-var swap — chosen</div>
+            <div class="reason">AWS (an AISPL account restriction) and Google (billing) both blocked the account; a one-line swap to Groq's free tier kept the whole pipeline running at $0.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-stack" style="margin-top: 24px;">
+        <span class="badge">Python</span>
+        <span class="badge">Groq (Llama 3.3 · gpt-oss-120b)</span>
+        <span class="badge">AWS Bedrock (Converse)</span>
+        <span class="badge">Google Gemini</span>
+        <span class="badge">Tool-Use / Function Calling</span>
+        <span class="badge">Sentence-Transformers (MiniLM)</span>
+        <span class="badge">CLIP (ViT-B/32)</span>
+        <span class="badge">rembg</span>
+        <span class="badge">SQLite</span>
+        <span class="badge">Streamlit</span>
+        <span class="badge">pandas</span>
+        <span class="badge">uv</span>
+      </div>
+
+      <a href="https://github.com/addy9051/True-texture-detector-AI-system" target="_blank" rel="noopener" class="github-link" style="margin-top: 20px; display: inline-flex;">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        View on GitHub — True-Texture Returns Intelligence
+      </a>
+    </div>
+
+    <!-- ═══ PROJECT 2: LOANLENS — LLM-OPS ════════════════════ -->
+    <div class="project-section t3 reveal">
+      <div class="project-label">
+        <span class="project-num">2</span>
+        <span class="label">LLM-Ops — Latency, Cost &amp; Quality Gating</span>
+      </div>
+      <span class="honest-label">🧪 Portfolio pilot on synthetic data by design — mechanisms are deliberately injected so each method validates against known ground truth; dollar figures use labelled assumptions</span>
+      <h2 style="margin-top: 16px;">LoanLens — Fixing a 32% AI-Analysis Drop-off in an LLM Micro-Loan Funnel</h2>
+      <p class="lead">
+        An LLM bank-statement-analysis step loses a third of users between analysis <em>initiated</em> and
+        <em>completed</em>. This project proves the drop-off is latency-driven, fixes it with a latency-fallback
+        router that's ~4.8× cheaper per conversion, and validates the fix with a 2×2 experiment guarded by both a
+        loan-default and a fair-lending non-inferiority test — the whole thing on a $0 local stack with a live dashboard.
+      </p>
+
+      <div class="metrics-row">
+        <div class="metric-chip">
+          <span class="metric-val hl-t3">32.8%</span>
+          <span class="metric-label">AI-analysis drop-off diagnosed</span>
+        </div>
+        <div class="metric-chip">
+          <span class="metric-val hl-t3">+9.2pp</span>
+          <span class="metric-label">Completion lift (both fixes, 2×2)</span>
+        </div>
+        <div class="metric-chip">
+          <span class="metric-val hl-t3">4.8×</span>
+          <span class="metric-label">Cheaper per conversion on fast model</span>
+        </div>
+        <div class="metric-chip">
+          <span class="metric-val hl-t3">1 day</span>
+          <span class="metric-label">Latency-drift detection (CUSUM)</span>
+        </div>
+      </div>
+
+      <div class="sub-section" style="margin-top: 40px;"><h3 style="color: var(--t3-color);">A — The Diagnosis: Completion Craters with Latency</h3></div>
+      <div class="card" style="margin-bottom: 24px;">
+        <p style="font-size:14px;">
+          Bucketing AI-analysis sessions by LLM latency, completion falls monotonically:
+          <strong class="text-strong">86.4% (&lt;3s) → 78.9% (3–5s) → 63.1% (5–8s) → 43.3% (&gt;8s)</strong>.
+          The &gt;8s cohort completes at roughly <em>half</em> the rate of the fast cohort — the drop-off is
+          latency-driven, not random impatience.
+        </p>
+        <p style="font-size:14px; margin-top:10px;">
+          <strong class="text-strong">Causal honesty:</strong> the naïve latency→completion estimate is confounded by
+          <code style="font-size:12px; color:var(--t3-color);">requested_amount</code> (bigger loans → more tokens → higher latency,
+          <em>and</em> → more-committed applicants → higher completion). A back-door adjustment moves the latency coefficient
+          <strong class="text-strong">−0.264 → −0.298 (+12.8% stronger)</strong> — the naïve number <em>understates</em> the harm.
+          The confounder is injected on purpose so the adjustment does real work, not circular recovery.
+        </p>
+      </div>
+
+      <div class="sub-section"><h3 style="color: var(--t3-color);">B — The Fix: A Latency-Fallback Router</h3></div>
+      <pre class="arch-diagram">
+<span class="hi3">SDV / Faker</span>  (20k seeded users)
+         │
+         ▼
+<span class="hi2">DuckDB</span> → <span class="hi2">dbt-duckdb</span>  (stg → int → fct marts · 9 models · 27 tests)
+         │
+         ▼
+<span class="hi">LiteLLM Gateway + Router</span>
+  primary  = llama3.2      (4s hard budget)
+  fallback = llama3.2:1b   (on budget breach)
+         │
+         ▼  every call traced by session_id
+<span class="hi3">Langfuse</span> (OTel)  →  tokens · latency · cost
+         │
+         ▼
+<span class="hi">statsmodels / scipy</span>
+  2×2 + interaction · non-inferiority guardrails · A/A · SRM · BH · back-door
+         │
+         ▼
+<span class="hi2">CUSUM monitor</span>  →  <span class="hi3">Streamlit</span> (live, deployed)</pre>
+
+      <div class="two-col" style="margin-top: 8px;">
+        <div class="card t3">
+          <h4>The 2×2 Factorial Result</h4>
+          <ul class="key-points" style="margin-top: 8px;">
+            <li>Progress bar (UX) <strong class="text-strong">+3.3pp</strong> — fixes <em>perceived</em> wait; can't move the &gt;8s tail</li>
+            <li>Fallback router (MLOps) <strong class="text-strong">+8.5pp</strong> — fixes <em>actual</em> tail latency + 4.8× lower cost/conversion</li>
+            <li>Both together <strong class="text-strong">+9.2pp</strong> with a significant <strong class="text-strong">sub-additive</strong> interaction (−1.5pp overlap) — exactly why a 2×2 beats two separate A/Bs</li>
+            <li>Cost per converted user: primary <strong class="text-strong">$0.036</strong> vs fast <strong class="text-strong">$0.0076</strong></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Guardrails — the fix can't silently hurt credit quality</h4>
+          <ul class="key-points" style="margin-top: 8px;">
+            <li><strong class="text-strong">Default-rate:</strong> one-sided 95% UB <strong class="text-strong">+0.64pp &lt; 1.0pp</strong> pre-registered margin → non-inferior</li>
+            <li><strong class="text-strong">Fair-lending (ECOA disparate-impact):</strong> prime−subprime gap 95% UB <strong class="text-strong">+1.25pp &lt; 2.0pp</strong> → non-inferior. An injected disparity exists, so this <em>can</em> fail</li>
+            <li><strong class="text-strong">Ship decision</strong> gates on all three at once: completion up AND both guardrails hold → SHIP</li>
+            <li>Supporting rigor: SRM χ², A/A (FPR ≈ 5%), Benjamini-Hochberg correction</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sub-section" style="margin-top: 40px;"><h3 style="color: var(--t3-color);">C — The Quality Gate: Is the Fast Model <em>Safe</em>, Not Just Fast?</h3></div>
+      <div class="card" style="margin-bottom: 20px;">
+        <p style="font-size:14px;">
+          Every result above runs on synthetic data — honest for testing <em>methods</em>, silent on how the real
+          <code style="font-size:12px; color:var(--t3-color);">llama3.2:1b</code> reasons about a bank statement. So the one piece of
+          real-model evidence: both Ollama models run a 14-case underwriting benchmark, graded deterministically against the
+          source facts <em>plus</em> an independent GPT-4o LLM-as-judge (GitHub Models free tier).
+        </p>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr><th>Real-model quality (14 cases)</th><th>Primary (3B)</th><th>Fast (1B)</th><th>Auto-approve bar</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Judge fact accuracy</td><td>74%</td><td>70%</td><td style="color:#f87171;">≥ 90% ✗</td></tr>
+          <tr><td>Hallucination rate</td><td>64%</td><td style="color:#f87171; font-weight:700;">86%</td><td style="color:#f87171;">≤ 5% ✗</td></tr>
+          <tr><td>Recommendation defensible</td><td>71%</td><td>43%</td><td>—</td></tr>
+        </tbody>
+      </table>
+      <div class="card t3" style="margin: 20px 0;">
+        <h4>The gate failed — and that is the finding</h4>
+        <p style="font-size:14px; margin-top:10px;">
+          The 1B invents phantom loans, credit limits, and account ages; even the 3B hallucinates on ~64% of cases.
+          <strong class="text-strong">Neither local model is underwriting-grade.</strong> So the router's job is
+          latency/cost optimisation of the <em>analysis</em> — <strong class="text-strong">not</strong> a licence to hand the
+          credit decision to a 1B. The approve/decline call stays gated behind human review and an abstention rule
+          (confidence &lt; 0.45 → no auto-offer). It's a deliberately <em>parallel</em> gate, never folded into the synthetic
+          ship decision: two different evidence bases must not be laundered into one green checkmark.
+        </p>
+      </div>
+
+      <div class="sub-section"><h3 style="color: var(--t3-color);">D — Built at $0, Architected for the Enterprise Analog</h3></div>
+      <div class="two-col">
+        <div class="decision-card">
+          <div class="decision-label">Portfolio build</div>
+          <h4>Every layer runs free / local</h4>
+          <ul class="key-points" style="margin-top: 8px;">
+            <li>DuckDB warehouse · dbt-duckdb transforms</li>
+            <li>LiteLLM → local Ollama models</li>
+            <li>Self-hosted Langfuse (OTel) observability</li>
+            <li>Streamlit dashboard, deployed free</li>
+          </ul>
+        </div>
+        <div class="decision-card">
+          <div class="decision-label">Documented enterprise analog</div>
+          <h4>Each swap is a config change, not a rewrite</h4>
+          <ul class="key-points" style="margin-top: 8px;">
+            <li>DuckDB → Snowflake on AWS</li>
+            <li>Ollama → GPT-4o / Claude via LiteLLM/Portkey</li>
+            <li>Langfuse Cloud · Statsig experimentation</li>
+            <li>Graduate each to a managed service for lower TCO</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tech-stack" style="margin-top: 24px;">
+        <span class="badge">Python</span>
+        <span class="badge">LiteLLM</span>
+        <span class="badge">Ollama (llama3.2)</span>
+        <span class="badge">Langfuse</span>
+        <span class="badge">OpenTelemetry</span>
+        <span class="badge">DuckDB</span>
+        <span class="badge">dbt-duckdb</span>
+        <span class="badge">SDV / Faker</span>
+        <span class="badge">statsmodels</span>
+        <span class="badge">scipy</span>
+        <span class="badge">Streamlit</span>
+        <span class="badge">GPT-4o (LLM-as-judge)</span>
+        <span class="badge">uv</span>
+      </div>
+
+      <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top: 20px;">
+        <a href="https://fintechai-analytics-project-ankitaddya.streamlit.app/" target="_blank" rel="noopener" class="github-link" style="display: inline-flex;">
+          🔍 &nbsp;Open Live Dashboard ↗
+        </a>
+        <a href="https://github.com/addy9051/FinTechAI-product-analytics-project" target="_blank" rel="noopener" class="github-link" style="display: inline-flex;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          View on GitHub — LoanLens (FinTechAI)
+        </a>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         PROJECT 3: SRE AGENT SYSTEM (CROWN JEWEL)
+         ═══════════════════════════════════════════════════════ -->
+    <div class="project-section t3 reveal">
+      <div class="project-label">
+        <span class="project-num">3</span>
         <span class="label" style="color: var(--t3-color);">Crown Jewel — Full Page Treatment</span>
       </div>
       <span class="private-note">🔒 Private repository — architecture and code excerpts shown below</span>
@@ -385,10 +739,10 @@ Incoming Incident
       </div>
     </div>
 
-    <!-- ═══ PROJECT 2: EXPENSE ANALYTICS AGENT ══════════════ -->
+    <!-- ═══ PROJECT 4: EXPENSE ANALYTICS AGENT ══════════════ -->
     <div class="project-section t3 reveal">
       <div class="project-label">
-        <span class="project-num">2</span>
+        <span class="project-num">4</span>
         <span class="label">AI Agent — Text-to-SQL</span>
       </div>
       <h2>Expense Analytics &amp; Policy Compliance — AI Agent Layer</h2>
@@ -463,10 +817,10 @@ Authenticated access — unauthenticated users blocked</pre>
       </a>
     </div>
 
-    <!-- ═══ PROJECT 3: CLV DSPy LAYER ════════════════════════ -->
+    <!-- ═══ PROJECT 5: CLV DSPy LAYER ════════════════════════ -->
     <div class="project-section t3 reveal">
       <div class="project-label">
-        <span class="project-num">3</span>
+        <span class="project-num">5</span>
         <span class="label">Constrained LLM Generation</span>
       </div>
       <h2>CLV Predictor — DSPy Integration</h2>
@@ -510,186 +864,10 @@ Authenticated access — unauthenticated users blocked</pre>
       </a>
     </div>
 
-    <!-- ═══ PROJECT 4: LOANLENS — LLM-OPS ════════════════════ -->
-    <div class="project-section t3 reveal">
-      <div class="project-label">
-        <span class="project-num">4</span>
-        <span class="label">LLM-Ops — Latency, Cost &amp; Quality Gating</span>
-      </div>
-      <span class="honest-label">🧪 Portfolio pilot on synthetic data by design — mechanisms are deliberately injected so each method validates against known ground truth; dollar figures use labelled assumptions</span>
-      <h2 style="margin-top: 16px;">LoanLens — Fixing a 32% AI-Analysis Drop-off in an LLM Micro-Loan Funnel</h2>
-      <p class="lead">
-        An LLM bank-statement-analysis step loses a third of users between analysis <em>initiated</em> and
-        <em>completed</em>. This project proves the drop-off is latency-driven, fixes it with a latency-fallback
-        router that's ~4.8× cheaper per conversion, and validates the fix with a 2×2 experiment guarded by both a
-        loan-default and a fair-lending non-inferiority test — the whole thing on a $0 local stack with a live dashboard.
-      </p>
-
-      <div class="metrics-row">
-        <div class="metric-chip">
-          <span class="metric-val hl-t3">32.8%</span>
-          <span class="metric-label">AI-analysis drop-off diagnosed</span>
-        </div>
-        <div class="metric-chip">
-          <span class="metric-val hl-t3">+9.2pp</span>
-          <span class="metric-label">Completion lift (both fixes, 2×2)</span>
-        </div>
-        <div class="metric-chip">
-          <span class="metric-val hl-t3">4.8×</span>
-          <span class="metric-label">Cheaper per conversion on fast model</span>
-        </div>
-        <div class="metric-chip">
-          <span class="metric-val hl-t3">1 day</span>
-          <span class="metric-label">Latency-drift detection (CUSUM)</span>
-        </div>
-      </div>
-
-      <div class="sub-section" style="margin-top: 40px;"><h3 style="color: var(--t3-color);">A — The Diagnosis: Completion Craters with Latency</h3></div>
-      <div class="card" style="margin-bottom: 24px;">
-        <p style="font-size:14px;">
-          Bucketing AI-analysis sessions by LLM latency, completion falls monotonically:
-          <strong class="text-strong">86.4% (&lt;3s) → 78.9% (3–5s) → 63.1% (5–8s) → 43.3% (&gt;8s)</strong>.
-          The &gt;8s cohort completes at roughly <em>half</em> the rate of the fast cohort — the drop-off is
-          latency-driven, not random impatience.
-        </p>
-        <p style="font-size:14px; margin-top:10px;">
-          <strong class="text-strong">Causal honesty:</strong> the naïve latency→completion estimate is confounded by
-          <code style="font-size:12px; color:var(--t3-color);">requested_amount</code> (bigger loans → more tokens → higher latency,
-          <em>and</em> → more-committed applicants → higher completion). A back-door adjustment moves the latency coefficient
-          <strong class="text-strong">−0.264 → −0.298 (+12.8% stronger)</strong> — the naïve number <em>understates</em> the harm.
-          The confounder is injected on purpose so the adjustment does real work, not circular recovery.
-        </p>
-      </div>
-
-      <div class="sub-section"><h3 style="color: var(--t3-color);">B — The Fix: A Latency-Fallback Router</h3></div>
-      <pre class="arch-diagram">
-<span class="hi3">SDV / Faker</span>  (20k seeded users)
-         │
-         ▼
-<span class="hi2">DuckDB</span> → <span class="hi2">dbt-duckdb</span>  (stg → int → fct marts · 9 models · 27 tests)
-         │
-         ▼
-<span class="hi">LiteLLM Gateway + Router</span>
-  primary  = llama3.2      (4s hard budget)
-  fallback = llama3.2:1b   (on budget breach)
-         │
-         ▼  every call traced by session_id
-<span class="hi3">Langfuse</span> (OTel)  →  tokens · latency · cost
-         │
-         ▼
-<span class="hi">statsmodels / scipy</span>
-  2×2 + interaction · non-inferiority guardrails · A/A · SRM · BH · back-door
-         │
-         ▼
-<span class="hi2">CUSUM monitor</span>  →  <span class="hi3">Streamlit</span> (live, deployed)</pre>
-
-      <div class="two-col" style="margin-top: 8px;">
-        <div class="card t3">
-          <h4>The 2×2 Factorial Result</h4>
-          <ul class="key-points" style="margin-top: 8px;">
-            <li>Progress bar (UX) <strong class="text-strong">+3.3pp</strong> — fixes <em>perceived</em> wait; can't move the &gt;8s tail</li>
-            <li>Fallback router (MLOps) <strong class="text-strong">+8.5pp</strong> — fixes <em>actual</em> tail latency + 4.8× lower cost/conversion</li>
-            <li>Both together <strong class="text-strong">+9.2pp</strong> with a significant <strong class="text-strong">sub-additive</strong> interaction (−1.5pp overlap) — exactly why a 2×2 beats two separate A/Bs</li>
-            <li>Cost per converted user: primary <strong class="text-strong">$0.036</strong> vs fast <strong class="text-strong">$0.0076</strong></li>
-          </ul>
-        </div>
-        <div class="card">
-          <h4>Guardrails — the fix can't silently hurt credit quality</h4>
-          <ul class="key-points" style="margin-top: 8px;">
-            <li><strong class="text-strong">Default-rate:</strong> one-sided 95% UB <strong class="text-strong">+0.64pp &lt; 1.0pp</strong> pre-registered margin → non-inferior</li>
-            <li><strong class="text-strong">Fair-lending (ECOA disparate-impact):</strong> prime−subprime gap 95% UB <strong class="text-strong">+1.25pp &lt; 2.0pp</strong> → non-inferior. An injected disparity exists, so this <em>can</em> fail</li>
-            <li><strong class="text-strong">Ship decision</strong> gates on all three at once: completion up AND both guardrails hold → SHIP</li>
-            <li>Supporting rigor: SRM χ², A/A (FPR ≈ 5%), Benjamini-Hochberg correction</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="sub-section" style="margin-top: 40px;"><h3 style="color: var(--t3-color);">C — The Quality Gate: Is the Fast Model <em>Safe</em>, Not Just Fast?</h3></div>
-      <div class="card" style="margin-bottom: 20px;">
-        <p style="font-size:14px;">
-          Every result above runs on synthetic data — honest for testing <em>methods</em>, silent on how the real
-          <code style="font-size:12px; color:var(--t3-color);">llama3.2:1b</code> reasons about a bank statement. So the one piece of
-          real-model evidence: both Ollama models run a 14-case underwriting benchmark, graded deterministically against the
-          source facts <em>plus</em> an independent GPT-4o LLM-as-judge (GitHub Models free tier).
-        </p>
-      </div>
-      <table class="data-table">
-        <thead>
-          <tr><th>Real-model quality (14 cases)</th><th>Primary (3B)</th><th>Fast (1B)</th><th>Auto-approve bar</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Judge fact accuracy</td><td>74%</td><td>70%</td><td style="color:#f87171;">≥ 90% ✗</td></tr>
-          <tr><td>Hallucination rate</td><td>64%</td><td style="color:#f87171; font-weight:700;">86%</td><td style="color:#f87171;">≤ 5% ✗</td></tr>
-          <tr><td>Recommendation defensible</td><td>71%</td><td>43%</td><td>—</td></tr>
-        </tbody>
-      </table>
-      <div class="card t3" style="margin: 20px 0;">
-        <h4>The gate failed — and that is the finding</h4>
-        <p style="font-size:14px; margin-top:10px;">
-          The 1B invents phantom loans, credit limits, and account ages; even the 3B hallucinates on ~64% of cases.
-          <strong class="text-strong">Neither local model is underwriting-grade.</strong> So the router's job is
-          latency/cost optimisation of the <em>analysis</em> — <strong class="text-strong">not</strong> a licence to hand the
-          credit decision to a 1B. The approve/decline call stays gated behind human review and an abstention rule
-          (confidence &lt; 0.45 → no auto-offer). It's a deliberately <em>parallel</em> gate, never folded into the synthetic
-          ship decision: two different evidence bases must not be laundered into one green checkmark.
-        </p>
-      </div>
-
-      <div class="sub-section"><h3 style="color: var(--t3-color);">D — Built at $0, Architected for the Enterprise Analog</h3></div>
-      <div class="two-col">
-        <div class="decision-card">
-          <div class="decision-label">Portfolio build</div>
-          <h4>Every layer runs free / local</h4>
-          <ul class="key-points" style="margin-top: 8px;">
-            <li>DuckDB warehouse · dbt-duckdb transforms</li>
-            <li>LiteLLM → local Ollama models</li>
-            <li>Self-hosted Langfuse (OTel) observability</li>
-            <li>Streamlit dashboard, deployed free</li>
-          </ul>
-        </div>
-        <div class="decision-card">
-          <div class="decision-label">Documented enterprise analog</div>
-          <h4>Each swap is a config change, not a rewrite</h4>
-          <ul class="key-points" style="margin-top: 8px;">
-            <li>DuckDB → Snowflake on AWS</li>
-            <li>Ollama → GPT-4o / Claude via LiteLLM/Portkey</li>
-            <li>Langfuse Cloud · Statsig experimentation</li>
-            <li>Graduate each to a managed service for lower TCO</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="tech-stack" style="margin-top: 24px;">
-        <span class="badge">Python</span>
-        <span class="badge">LiteLLM</span>
-        <span class="badge">Ollama (llama3.2)</span>
-        <span class="badge">Langfuse</span>
-        <span class="badge">OpenTelemetry</span>
-        <span class="badge">DuckDB</span>
-        <span class="badge">dbt-duckdb</span>
-        <span class="badge">SDV / Faker</span>
-        <span class="badge">statsmodels</span>
-        <span class="badge">scipy</span>
-        <span class="badge">Streamlit</span>
-        <span class="badge">GPT-4o (LLM-as-judge)</span>
-        <span class="badge">uv</span>
-      </div>
-
-      <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top: 20px;">
-        <a href="https://fintechai-analytics-project-ankitaddya.streamlit.app/" target="_blank" rel="noopener" class="github-link" style="display: inline-flex;">
-          🔍 &nbsp;Open Live Dashboard ↗
-        </a>
-        <a href="https://github.com/addy9051/FinTechAI-product-analytics-project" target="_blank" rel="noopener" class="github-link" style="display: inline-flex;">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-          View on GitHub — LoanLens (FinTechAI)
-        </a>
-      </div>
-    </div>
-
     <!-- ═══ HUGGINGFACE MCP ════════════════════════════════════ -->
     <div class="project-section t3 reveal" style="border-bottom: none; margin-bottom: 40px; padding-bottom: 40px;">
       <div class="project-label">
-        <span class="project-num">5</span>
+        <span class="project-num">6</span>
         <span class="label">Hackathon</span>
       </div>
       <h2>HuggingFace MCP Hackathon — AI Wellness Application</h2>

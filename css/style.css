@@ -296,6 +296,34 @@ p  { color: var(--text-muted); line-height: 1.75; }
   line-height: 1.6;
 }
 
+/* Animated live project counter — track-page headers */
+.header-count {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 9px;
+  margin-top: 28px;
+  padding: 11px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+.header-count .count-num {
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.header-count .count-word {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+.header-count[data-track="1"] .count-num { color: var(--t1-color); }
+.header-count[data-track="2"] .count-num { color: var(--t2-color); }
+.header-count[data-track="3"] .count-num { color: var(--t3-color); }
+
 /* ═══════════════════════════════════════════════════════════════
    PAGE HEADER (inner pages)
    ═══════════════════════════════════════════════════════════════ */
