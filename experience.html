@@ -60,10 +60,17 @@
 
             <div class="exp-role">
               <div class="exp-role-header">
-                <h4>Data Scientist / ML Engineer</h4>
+                <h4>AI / ML Engineer</h4>
                 <span class="exp-role-period">Nov 2022 – Present</span>
               </div>
               <ul>
+                <li>
+                  Built <strong style="color:var(--text);">True-Texture</strong>, a returns agent for fashion
+                  e-commerce, with forced tool-use, three-tier memory and a provider-agnostic LLM layer (Groq, Gemini,
+                  AWS Bedrock). A semantic filter calibrated on 48,000 review sentences took correct flags from about 1
+                  in 2 to 9 in 10. Dropped a CLIP feature after a control-group test showed no signal. <span
+                    style="color:var(--text-muted); font-size:0.9em;">[Prototype, actively evolving]</span>
+                </li>
                 <li>
                   Completed a 28-month assessed Data Science and Machine Learning program at
                   <strong style="color:var(--text);">Scaler Academy</strong> — written examinations and technical
@@ -102,6 +109,9 @@
                 <span class="badge">PySpark</span>
                 <span class="badge">LangGraph</span>
                 <span class="badge">LangChain</span>
+                <span class="badge">AWS Bedrock</span>
+                <span class="badge">Gemini</span>
+                <span class="badge">Groq</span>
                 <span class="badge">Vowpal Wabbit</span>
                 <span class="badge">Snowflake</span>
                 <span class="badge">dbt</span>
@@ -138,25 +148,29 @@
               </div>
               <ul>
                 <li>
-                  Led a 4-analyst workstream building <strong style="color:var(--text);">FidelityPulse</strong>,
-                  a production ML fraud detection platform on Databricks PySpark for a financial services B2B client.
-                  Improved model accuracy from 85% to 92% through feature engineering — not algorithm switching.
+                  Led a 4-analyst team to develop <strong style="color:var(--text);">FidelityPulse</strong>, a fraud
+                  detection solution for a FinTech client; engineered features and ETL pipelines in Databricks/PySpark
+                  and improved model performance from 85% to 92% using statistical feature-selection techniques
+                  including ANOVA and Chi-squared tests.
                 </li>
                 <li>
-                  Built <strong style="color:var(--text);">CreditPulse</strong>, an NLP credit risk classifier
-                  achieving 90%+ accuracy on 10 years of unstructured financial market data.
-                  Feature extraction: TF-IDF vectorisation + BERT embeddings.
+                  Built <strong style="color:var(--text);">CreditPulse</strong>, an NLP-based credit risk classification
+                  solution using BERT embeddings, K-Means clustering, and Isolation Forest on large volumes of
+                  historical unstructured financial data; achieved 93% recall versus 75% for the existing quarterly
+                  manual baseline.
                 </li>
                 <li>
-                  Standardised data labelling processes — annotation logic documented as SOPs with
-                  subject matter experts. Automated training-data collection via Power Automate.
+                  Developed a Random Forest Regressor for financial prediction, using feature engineering and
+                  statistical analysis to improve predictive performance, achieving 0.92 adjusted R² and reducing
+                  normalized RMSE by 8% versus the baseline model.
                 </li>
                 <li>
-                  Built a Random Forest model to detect important values and announcements (interest rates, leadership
-                  changes) on bank and financial institution webpages. Crawled sites with Screaming Frog, identified URL
-                  patterns of key pages, and learned HTML structure to label DOM data. When the classification framing
-                  stalled at 62% accuracy and 51% recall, reframed it as importance-score regression and reached 8%
-                  nRMSE.
+                  Optimized complex SQL queries and materialized views, reducing analysis runtime by 40% and
+                  accelerating weekly reporting workflows for business stakeholders.
+                </li>
+                <li>
+                  Automated data cleansing and preparation workflows using Power Automate, reducing a manual process
+                  from days to minutes while minimizing data-entry errors and improving reporting reliability.
                 </li>
               </ul>
               <div class="tech-stack" style="margin-top: 16px;">
@@ -165,9 +179,10 @@
                 <span class="badge">Python</span>
                 <span class="badge">Random Forest</span>
                 <span class="badge">BERT</span>
-                <span class="badge">TF-IDF</span>
-                <span class="badge">Power Automate</span>
+                <span class="badge">K-Means</span>
+                <span class="badge">Isolation Forest</span>
                 <span class="badge">SQL</span>
+                <span class="badge">Power Automate</span>
               </div>
             </div>
 
